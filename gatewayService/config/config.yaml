@@ -1,0 +1,29 @@
+logger:
+  max_age: 720h
+  max_size: 20MB
+  filename_pattern: "%Y-%m-%dT%H:%M"
+  rotation_time: "24h"
+  internal_path: "../../logDatas/gatewayService"
+  mode: "debug"
+
+service:
+  auth:
+    host: "auth-service"
+    port: "50054"
+    contextDeadline: 5
+  todo:
+    host: "todo-service"
+    port: "50053"
+    contextDeadline: 5
+
+server:
+  port: 8080
+  gracefulShutdownPeriod: 7
+
+token:
+  secretkey: "jwt@mohammaderm5060Mohammad"
+  issue: "127.0.1.1"
+
+metrics:
+  port: 8081
+

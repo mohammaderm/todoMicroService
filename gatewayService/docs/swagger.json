@@ -1,0 +1,589 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Todo API documentation",
+        "contact": {},
+        "version": "0.0.1"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "description": "login User with \"email\" and \"password\" to get token for authentication user to use other endpoints",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "LOGIN USER",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "login",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.LoginReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.PairToken"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "description": "register User for use api",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "REGISTER USER",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "register",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.RegisterReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/types.PairToken"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/category/create": {
+            "post": {
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "description": "create category based on params. (auth required)",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "summary": "CREATE CATEGORY",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "category",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateCategoryReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/category/getall": {
+            "get": {
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "description": "get all category. (auth required)",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "summary": "GETALL CATEGORY",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/category/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "description": "delete category based on category Id. (auth required)",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Category"
+                ],
+                "summary": "DELETE CATEGORY",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": " ",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/todo/create": {
+            "post": {
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "description": "create todo based on params. (auth required)",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "CREATE TODO",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "todo",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.CreateTodoReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/todo/due_date/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "description": "update todo due_date based on todo Id and due_date. (auth required)",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "UPDATE TODO DUE_DATE",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "dueDate",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.UpdateDueDate"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": " ",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/todo/getall": {
+            "get": {
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "description": "get all todo based on offset for pagination. (auth required)",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "GETALL TODO",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "minimum number for offset is '0', defualt limit is '5'",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/todo/priority/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "description": "update todo priority based on todo Id and priority. (auth required)",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "UPDATE TODO PRIORITY",
+                "parameters": [
+                    {
+                        "description": " ",
+                        "name": "priority",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/types.UpdatePriority"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": " ",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/todo/status/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "description": "update todo Status based on todo Id. (auth required)",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "UPDATE TODO STATUS",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": " ",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "delivery.jsonResponse": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "error": {
+                    "type": "boolean"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "types.CreateCategoryReq": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "example": "Work"
+                }
+            }
+        },
+        "types.CreateTodoReq": {
+            "type": "object",
+            "properties": {
+                "accountId": {
+                    "type": "integer"
+                },
+                "categoryId": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "description": {
+                    "type": "string",
+                    "example": "solve all problems in chapter 2"
+                },
+                "title": {
+                    "type": "string",
+                    "example": "do homeWork"
+                }
+            }
+        },
+        "types.LoginReq": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "example@gmai.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "111222333444"
+                }
+            }
+        },
+        "types.PairToken": {
+            "type": "object",
+            "properties": {
+                "accessToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE1OTY5Nzc2MjEsImZuYW1lIjoiU2hhbiIsImxuYW1lIjoiVml2IiwidXNlciI6ImFzZEB0ZXN0LmNvbSJ9.tdhUL-KpDmzSNtV9z6XhUgoTKcVabuOPS3fHAySjSXQ"
+                },
+                "refreshToken": {
+                    "type": "string",
+                    "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE1OTY5Nzc2MjEsImZuYW1lIjoiU2hhbiIsImxuYW1lIjoiVml2IiwidXNlciI6ImFzZEB0ZXN0LmNvbSJ9.tdhUL-KpDmzSNtV9z6XhUgoTKcVabuOPS3fHAySjSXQ"
+                }
+            }
+        },
+        "types.RegisterReq": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "example@gmai.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "111222333444"
+                },
+                "userName": {
+                    "type": "string",
+                    "example": "example5040"
+                }
+            }
+        },
+        "types.UpdateDueDate": {
+            "type": "object",
+            "properties": {
+                "due_date": {
+                    "type": "string",
+                    "example": "2022-09-12 12:50:05"
+                }
+            }
+        },
+        "types.UpdatePriority": {
+            "type": "object",
+            "properties": {
+                "priority": {
+                    "type": "integer",
+                    "example": 5
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "apiKey": {
+            "type": "apiKey",
+            "name": "Token",
+            "in": "header"
+        }
+    }
+}

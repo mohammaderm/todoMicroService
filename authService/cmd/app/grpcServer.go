@@ -3,11 +3,12 @@ package app
 import (
 	"net"
 
-	"github.com/mohammaderm/authService/config"
-	delivery_grpc "github.com/mohammaderm/authService/internal/delivery/grpc"
-	"github.com/mohammaderm/authService/internal/usecase"
-	"github.com/mohammaderm/authService/pkg/logger"
-	"github.com/mohammaderm/authService/proto"
+	"github.com/mohammaderm/todoMicroService/authService/config"
+	delivery_grpc "github.com/mohammaderm/todoMicroService/authService/internal/delivery/grpc"
+	"github.com/mohammaderm/todoMicroService/authService/internal/usecase"
+	"github.com/mohammaderm/todoMicroService/authService/pkg/logger"
+	"github.com/mohammaderm/todoMicroService/authService/proto"
+
 	"google.golang.org/grpc"
 )
 

@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "github/mohammaderm/todoService/proto";
+
+import "google/protobuf/timestamp.proto";
+
+service TodoService{
+    rpc Create(CreateRequest) returns (CreateRespons);
+    rpc GetAll(GetAllRequest) returns (GetAllRespons);
+    rpc Delete(DeleteRequest) returns (DeleteRespons);
+    rpc UpdateStatus(UpdateStatusRequest) returns (UpdateRespons);
+    rpc UpdatePriority(UpdatePriorityRequest) returns (UpdateRespons);
+    rpc UpdateDueDate(UpdateDueDateRequest) returns (UpdateRespons);
+}
+
+message GetAllRespons{
+    repeated Todo todos = 1;
+    bool error = 2;
+    string message = 3;
+}
+
+message GetAllRequest{
+    uint64 accountId = 1;
+    uint64 offset = 2;
+}
+
+message Todo{
+    uint64 id = 1;
+    uint64 accountId= 2;
+    uint64 categoryId= 3;
+    string title= 4;
+    string description= 5;
+    bool status = 6;
+    google.protobuf.Timestamp created_at = 7;
+}
+
+message UpdatePriorityRequest{
+    uint64 accountId = 1;
+    uint64 id = 2;
+    uint64 Priority = 3;
+}
+
+message UpdateDueDateRequest{
+    uint64 accountId = 1;
+    uint64 id = 2;
+    google.protobuf.Timestamp DueDate = 3;
+}
+
+message UpdateStatusRequest{
+    uint64 accountId = 1;
+    uint64 id = 2;
+}
+
+message UpdateRespons{
+    bool error = 1;
+    string message = 2;
+}
+
+message DeleteRequest{
+    uint64 accountId = 1;
+    uint64 id = 2;
+}
+
+message DeleteRespons{
+    bool error = 1;
+    string message = 2;
+}
+
+message CreateRequest{
+    uint64 accountId = 1;
+    uint64 categoryId = 2;
+    string title = 3;
+    string description = 4; 
+}
+
+message CreateRespons{
+    bool error = 1;
+    string message = 2;
+}

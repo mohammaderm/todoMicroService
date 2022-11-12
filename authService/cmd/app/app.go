@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/mohammaderm/authService/config"
-	"github.com/mohammaderm/authService/internal/repository"
-	"github.com/mohammaderm/authService/internal/usecase"
-	"github.com/mohammaderm/authService/pkg/jwt"
-	"github.com/mohammaderm/authService/pkg/logger"
+	"github.com/mohammaderm/todoMicroService/authService/config"
+	"github.com/mohammaderm/todoMicroService/authService/internal/repository"
+	"github.com/mohammaderm/todoMicroService/authService/internal/usecase"
+	"github.com/mohammaderm/todoMicroService/authService/pkg/jwt"
+	"github.com/mohammaderm/todoMicroService/authService/pkg/logger"
 )
 
 func App() func() {

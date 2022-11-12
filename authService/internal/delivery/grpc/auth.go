@@ -1,13 +1,12 @@
 package grpc
 
 import (
-	"github.com/mohammaderm/authService/internal/dto"
-	"github.com/mohammaderm/authService/pkg/logger"
-	"github.com/mohammaderm/authService/proto"
-
 	"context"
 
-	"github.com/mohammaderm/authService/internal/usecase"
+	"github.com/mohammaderm/todoMicroService/authService/internal/dto"
+	"github.com/mohammaderm/todoMicroService/authService/internal/usecase"
+	"github.com/mohammaderm/todoMicroService/authService/pkg/logger"
+	"github.com/mohammaderm/todoMicroService/authService/proto"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

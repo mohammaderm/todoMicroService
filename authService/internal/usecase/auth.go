@@ -4,12 +4,12 @@ import (
 	"context"
 	"errors"
 
-	"github.com/mohammaderm/authService/internal/dto"
-	"github.com/mohammaderm/authService/internal/models"
-	"github.com/mohammaderm/authService/internal/repository"
-	"github.com/mohammaderm/authService/pkg/jwt"
-	"github.com/mohammaderm/authService/pkg/logger"
-	"github.com/mohammaderm/authService/pkg/validator"
+	"github.com/mohammaderm/todoMicroService/authService/internal/dto"
+	"github.com/mohammaderm/todoMicroService/authService/internal/models"
+	"github.com/mohammaderm/todoMicroService/authService/internal/repository"
+	"github.com/mohammaderm/todoMicroService/authService/pkg/jwt"
+	"github.com/mohammaderm/todoMicroService/authService/pkg/logger"
+	"github.com/mohammaderm/todoMicroService/authService/pkg/validator"
 	"golang.org/x/crypto/bcrypt"
 )
 

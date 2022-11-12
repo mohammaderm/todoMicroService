@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "github/mohammaderm/todoService/proto";
+
+import "google/protobuf/timestamp.proto";
+
+service CategoryService{
+    rpc CreateCat(CreateCatRequest) returns (CreateCatRespons);
+    rpc GetAllCat(GetAllCatRequest) returns (GetAllCatRespons);
+    rpc DeleteCat(DeleteCatRequest) returns (DeleteCatRespons);
+}
+// --------------------
+// category
+// --------------------
+message DeleteCatRequest{
+    uint64 accountId = 1;
+    uint64 id = 2;
+}
+
+message DeleteCatRespons{
+    bool error = 1;
+    string message = 2;
+}
+
+message CreateCatRequest{
+    string title = 1;
+    uint64 accountId = 2;
+}
+
+message CreateCatRespons{
+    bool error = 1;
+    string message = 2;
+}
+
+message Category{
+    uint64 id = 1;
+    string title = 2;
+    uint64 accountId = 3;
+    google.protobuf.Timestamp created_at = 4;
+}
+
+message GetAllCatRequest{
+    uint64 accountId = 1;
+}
+
+message GetAllCatRespons{
+    repeated Category categorys = 1;
+    bool error = 2;
+    string message = 3;
+}

@@ -5,10 +5,11 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/mohammaderm/todoMicroService/authService/cmd/app"
+	"github.com/mohammaderm/todoMicroService/todoService/cmd/app"
 )
 
 func main() {
+
 	shutDown := app.App()
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
@@ -18,4 +19,5 @@ func main() {
 		<-c
 		shutDown()
 	}()
+
 }

@@ -8,8 +8,8 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
-	"github.com/mohammaderm/authService/internal/models"
-	"github.com/mohammaderm/authService/pkg/logger"
+	"github.com/mohammaderm/todoMicroService/authService/internal/models"
+	"github.com/mohammaderm/todoMicroService/authService/pkg/logger"
 )
 
 var (

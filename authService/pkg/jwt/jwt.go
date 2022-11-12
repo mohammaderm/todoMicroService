@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
-	"github.com/mohammaderm/authService/config"
-	"github.com/mohammaderm/authService/pkg/logger"
+	"github.com/mohammaderm/todoMicroService/authService/config"
+	"github.com/mohammaderm/todoMicroService/authService/pkg/logger"
 )
 
 type JwtClaims struct {

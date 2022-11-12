@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/mohammaderm/authService/config"
-	"github.com/mohammaderm/authService/pkg/logger"
+	"github.com/mohammaderm/todoMicroService/authService/config"
+	"github.com/mohammaderm/todoMicroService/authService/pkg/logger"
 )
 
 func DBconnection(logger logger.Logger, config *config.Database) (*sqlx.DB, func(), error) {

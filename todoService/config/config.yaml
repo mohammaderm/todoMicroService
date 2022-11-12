@@ -1,0 +1,28 @@
+logger:
+  max_age: 720h
+  max_size: 20MB
+  filename_pattern: "%Y-%m-%dT%H:%M"
+  rotation_time: "24h"
+  internal_path: "../../logDatas/todoService"
+  mode: "debug"
+
+database:
+  mysql:
+    database: todo
+    username: todo
+    password: todo_admin
+    # host: host.minikube.internal
+    host: mysql
+    port: 3306
+    # adabter: mysql
+    # time_zone: Asia/Tehran
+    # charset: utf8mb4
+
+redis:
+  server: redis
+  password: ""
+  db: 0
+  port: 6379
+
+grpc:
+  port: 50053

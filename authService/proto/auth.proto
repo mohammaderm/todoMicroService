@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "github.com/mohammaderm/authService/proto";
+
+
+import "google/protobuf/timestamp.proto";
+
+service AuthService{
+    rpc Register(RegisterRequest) returns (RegisterRespons);
+    rpc Login(LoginRequest) returns (LoginRespons);
+}
+
+message User{
+    uint64 id = 1;
+    string email = 2;
+    string usernae = 3;
+    string password = 4;
+    google.protobuf.Timestamp created_at = 5;
+}
+
+message PairToken{
+    string accessToken = 1;
+    string refreshToken = 2;
+}
+
+message RegisterRequest{
+    string email = 1;
+    string username = 2;
+    string password = 3;
+}
+
+message RegisterRespons{
+    string message = 1;
+    bool error = 2;
+}
+
+
+message LoginRequest{
+    string email = 1;
+    string password = 2;
+}
+
+message LoginRespons{
+    PairToken pairToken = 1;
+}

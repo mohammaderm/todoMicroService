@@ -1,0 +1,33 @@
+logger:
+  max_age: 720h
+  max_size: 20MB
+  filename_pattern: "%Y-%m-%dT%H:%M"
+  rotation_time: "24h"
+  internal_path: "../../logDatas/authService"
+  mode: "debug"
+
+auth:
+  secretkey: "jwt@mohammaderm5060Mohammad"
+  issue: "127.0.1.1"
+  # mins
+  expire_time_a: 15
+  # hours
+  expire_time_r: 24
+
+database:
+  postgresql:
+    database: auth
+    username: admin
+    password: auth_admin
+    # host: host.minikube.internal
+    host: postgres
+    port: 5432
+    adabter: postgresql
+    time_zone: Asia/Tehran
+    charset: utf8mb4
+    
+  mysql:
+
+grpc:
+  port: 50054
+

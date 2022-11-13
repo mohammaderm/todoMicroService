@@ -1,10 +1,13 @@
 package monitoring
 
 import (
+	"context"
 	"net/http"
 	"strconv"
 	"time"
 
+	"github.com/mohammaderm/todoMicroService/gatewayService/config"
+	"github.com/mohammaderm/todoMicroService/gatewayService/pkg/logger"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
@@ -15,6 +18,7 @@ type MetricsCallectors interface {
 	HttpResponseTime(method, path string, statusCode int, duration time.Duration)
 	HttpRequestCount(method, path string, statusCode int)
 	Start() error
+	Shotdown() error
 }
 
 type PrometheusMetrics struct {
@@ -22,9 +26,11 @@ type PrometheusMetrics struct {
 	httpRequestCountMetric *prometheus.CounterVec
 	registry               *prometheus.Registry
 	server                 *http.Server
+	config                 config.Server
+	logger                 logger.Logger
 }
 
-func New(port string) MetricsCallectors {
+func New(port string, logger logger.Logger, config config.Server) MetricsCallectors {
 	prometheusMetrics := &PrometheusMetrics{
 
 		httpResponseTimeMetric: prometheus.NewHistogramVec(prometheus.HistogramOpts{
@@ -45,6 +51,8 @@ func New(port string) MetricsCallectors {
 			ReadTimeout:  time.Second * 2,
 			WriteTimeout: time.Second * 5,
 		},
+		logger: logger,
+		config: config,
 	}
 	prometheusMetrics.registry.MustRegister(prometheusMetrics.httpResponseTimeMetric)
 	prometheusMetrics.registry.MustRegister(prometheusMetrics.httpRequestCountMetric)
@@ -71,5 +79,16 @@ func (p PrometheusMetrics) Start() error {
 		return err
 	}
 
+	return nil
+}
+
+func (p PrometheusMetrics) Shotdown() error {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(p.config.GracefulShutdownPeriod)*time.Second)
+	defer cancel()
+	if err := p.server.Shutdown(ctx); err != nil {
+		p.logger.Warning("error while shutting server down (Prometheus)", map[string]interface{}{
+			"err": err.Error(),
+		})
+	}
 	return nil
 }

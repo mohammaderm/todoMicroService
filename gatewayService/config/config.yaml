@@ -18,7 +18,7 @@ service:
 
 server:
   port: 8080
-  gracefulShutdownPeriod: 7
+  gracefulShutdownPeriod: 20
 
 token:
   secretkey: "jwt@mohammaderm5060Mohammad"

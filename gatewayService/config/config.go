@@ -4,13 +4,13 @@ import (
 	"io/ioutil"
 	"os"
 
-	_ "embed"
+	// _ "embed"
 
 	"gopkg.in/yaml.v2"
 )
 
 // go:embed config.yaml
-var configs []byte
+// var configs []byte
 
 func NewConfig(path string) (*Config, error) {
 	config := Config{}

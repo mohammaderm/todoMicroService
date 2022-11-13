@@ -16,7 +16,7 @@ import (
 func App() (*serverDep, func()) {
 
 	// config init
-	config, err := config.NewConfig("./config.yaml")
+	config, err := config.NewConfig("../config/config.yaml")
 	if err != nil {
 		log.Panic(err.Error())
 	}
@@ -41,7 +41,7 @@ func App() (*serverDep, func()) {
 	categoryHandler := delivery.NewCategoryHandler(Logger, &config.Service)
 
 	// servers init
-	metrics := monitoring.New(config.Metrics.Port)
+	metrics := monitoring.New(config.Metrics.Port, Logger, config.Server)
 	router := delivery.RouterProvider(&delivery.RouteProvider{
 		AuthHandler:     authHandler,
 		TodoHandler:     todoHandler,
@@ -54,6 +54,7 @@ func App() (*serverDep, func()) {
 	serverDep := serverDepProvider(Logger, server, metrics)
 
 	return serverDep, func() {
+		metrics.Shotdown()
 		graceShutDown()
 	}
 }
@@ -76,7 +77,7 @@ func (s serverDep) StartServer() {
 		defer wg.Done()
 		err := s.server.ListenAndServe()
 		if err != nil {
-			s.logger.Panic("can not runnig server", map[string]interface{}{
+			s.logger.Warning("can not runnig server", map[string]interface{}{
 				"err":  err.Error(),
 				"Addr": s.server.Addr,
 			})
@@ -87,7 +88,7 @@ func (s serverDep) StartServer() {
 		defer wg.Done()
 		err := s.metrics.Start()
 		if err != nil {
-			s.logger.Panic("can not runnig metrics server", map[string]interface{}{
+			s.logger.Warning("can not runnig metrics server", map[string]interface{}{
 				"err": err.Error(),
 			})
 		}

@@ -1,0 +1,31 @@
+time="2022-11-04T12:50:54+03:30" level=info msg="logger is runnig up..." extras="[]"
+time="2022-11-04T12:50:54+03:30" level=panic msg="can not connect to database" extras="[map[error:dial tcp: lookup postgres: Temporary failure in name resolution]]"
+time="2022-11-04T12:52:31+03:30" level=info msg="logger is runnig up..." extras="[]"
+time="2022-11-04T12:52:31+03:30" level=info msg="can not connect to database" extras="[map[error:dial tcp: lookup postgres: Temporary failure in name resolution]]"
+time="2022-11-04T12:52:31+03:30" level=info msg="can not connect to database." extras="[]"
+time="2022-11-04T12:52:31+03:30" level=info msg="database is connected succesfully" extras="[]"
+time="2022-11-04T12:52:31+03:30" level=info msg="grpc is runig in port 50054 ..." extras="[]"
+time="2022-11-04T12:53:18+03:30" level=info msg="can not connect to database." extras="[]"
+time="2022-11-04T12:53:18+03:30" level=info msg="logger is runnig up..." extras="[]"
+time="2022-11-04T12:53:18+03:30" level=info msg="can not connect to database" extras="[map[error:dial tcp: lookup postgres: Temporary failure in name resolution]]"
+time="2022-11-04T12:53:18+03:30" level=info msg="can not connect to database." extras="[]"
+time="2022-11-04T12:53:18+03:30" level=info msg="database is connected succesfully" extras="[]"
+time="2022-11-04T12:53:18+03:30" level=info msg="grpc is runig in port 50054 ..." extras="[]"
+time="2022-11-04T12:54:02+03:30" level=info msg="can not connect to database." extras="[]"
+time="2022-11-04T12:54:02+03:30" level=info msg="logger is runnig up..." extras="[]"
+time="2022-11-04T12:54:02+03:30" level=info msg="can not connect to database" extras="[map[error:dial tcp: lookup postgres: Temporary failure in name resolution]]"
+time="2022-11-04T12:54:02+03:30" level=info msg="can not connect to database." extras="[]"
+time="2022-11-04T12:54:02+03:30" level=info msg="database is connected succesfully" extras="[]"
+time="2022-11-04T12:54:02+03:30" level=info msg="grpc is runig in port 50054 ..." extras="[]"
+time="2022-11-04T12:54:12+03:30" level=info msg="can not connect to database." extras="[]"
+time="2022-11-04T12:54:12+03:30" level=info msg="logger is runnig up..." extras="[]"
+time="2022-11-04T12:54:12+03:30" level=info msg="can not connect to database" extras="[map[error:dial tcp: lookup postgres: Temporary failure in name resolution]]"
+time="2022-11-04T12:54:12+03:30" level=info msg="can not connect to database." extras="[]"
+time="2022-11-04T12:54:12+03:30" level=info msg="database is connected succesfully" extras="[]"
+time="2022-11-04T12:54:12+03:30" level=info msg="grpc is runig in port 50054 ..." extras="[]"
+{"extras":null,"level":"info","msg":"can not connect to database.","time":"2022-11-04T12:55:36+03:30"}
+{"extras":null,"level":"info","msg":"logger is runnig up...","time":"2022-11-04T12:55:36+03:30"}
+{"extras":[{"error":"dial tcp: lookup postgres: Temporary failure in name resolution"}],"level":"info","msg":"can not connect to database","time":"2022-11-04T12:55:36+03:30"}
+{"extras":null,"level":"info","msg":"can not connect to database.","time":"2022-11-04T12:55:36+03:30"}
+{"extras":null,"level":"info","msg":"database is connected succesfully","time":"2022-11-04T12:55:36+03:30"}
+{"extras":null,"level":"info","msg":"grpc is runig in port 50054 ...","time":"2022-11-04T12:55:36+03:30"}

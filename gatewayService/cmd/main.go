@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
@@ -24,6 +25,7 @@ func main() {
 	signal.Notify(c, syscall.SIGINT)
 	go func() {
 		<-c
+		fmt.Println("gracefull shotdown is runnig in 20 sec ...")
 		shutDown()
 	}()
 	servers.StartServer()

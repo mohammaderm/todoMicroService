@@ -10,9 +10,10 @@ import (
 	"github.com/mohammaderm/todoMicroService/gatewayService/config"
 	"github.com/mohammaderm/todoMicroService/gatewayService/internal/types"
 	"github.com/mohammaderm/todoMicroService/gatewayService/pkg/logger"
+	"github.com/mohammaderm/todoMicroService/todoService/proto"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/mohammaderm/todoMicroService/todoService/proto"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/protobuf/types/known/timestamppb"

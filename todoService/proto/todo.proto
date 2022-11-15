@@ -33,6 +33,8 @@ message Todo{
     string description= 5;
     bool status = 6;
     google.protobuf.Timestamp created_at = 7;
+    uint64 priority = 8;
+    google.protobuf.Timestamp DueDate = 9;
 }
 
 message UpdatePriorityRequest{

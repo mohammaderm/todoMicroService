@@ -20,8 +20,13 @@ down:
 action=up
 n=1
 migrate:
-	migrate -path ./migration/todoService -database "mysql://todo:todo_admin@tcp(0.0.0.0:3306)/todo?parseTime=true" -verbose $(action)
+	migrate -path ./migration/todoService -database "mysql://todo:todo_admin@tcp(0.0.0.0:3306)/todo?parseTime=true" -verbose $(action) $(n)
 	migrate -path ./migration/authService -database "postgres://admin:auth_admin@0.0.0.0:5432/auth?sslmode=disable" -verbose $(action) $(n)
+
+migrate_create:
+	migrate create -ext sql -dir ./migration/todoService -seq category_schema
+	migrate create -ext sql -dir ./migration/todoService -seq todo_schema
+	migrate create -ext sql -dir ./migration/authService -seq accounts_schema
 
 define HELP_TEXT
 Use the following commands:
@@ -34,6 +39,9 @@ Use the following commands:
 	make migrate [up|down|force] N
 		run migrations. default is ACTION=up with N=1
 
+	migrate_create
+		create migrations files
+		
 	make run
 		run project using docker compose
 	

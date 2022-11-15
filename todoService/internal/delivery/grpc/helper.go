@@ -17,6 +17,8 @@ func mapTodos(todos *[]models.Todo) []*proto.Todo {
 			Description: todo.Description,
 			Status:      todo.Status,
 			CreatedAt:   timestamppb.New(todo.CreatedAt),
+			Priority:    uint64(todo.Priority),
+			DueDate:     timestamppb.New(todo.DueDate),
 		})
 	}
 	return protoTodos

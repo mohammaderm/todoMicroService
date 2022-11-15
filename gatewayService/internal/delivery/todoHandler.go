@@ -303,6 +303,7 @@ func (t *TodoHandler) Create(w http.ResponseWriter, r *http.Request) {
 		t.errorJSON(w, errors.New("can not parse values"), http.StatusBadRequest)
 		return
 	}
+	accountInfo := r.Context().Value(accountInfoKeyCtx).(types.AccountInfo)
 	// grpc reqest
 	conn, err := grpc.DialContext(r.Context(), t.cfg.Todo.Host+":"+t.cfg.Todo.Port, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -314,7 +315,7 @@ func (t *TodoHandler) Create(w http.ResponseWriter, r *http.Request) {
 	defer cancel()
 
 	respons, err := client.Create(ctx, &proto.CreateRequest{
-		AccountId:   req.AccountId,
+		AccountId:   accountInfo.Id,
 		CategoryId:  req.CategoryId,
 		Title:       req.Title,
 		Description: req.Description,

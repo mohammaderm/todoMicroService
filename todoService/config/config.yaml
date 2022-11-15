@@ -15,7 +15,7 @@ database:
     host: mysql
     port: 3306
     # adabter: mysql
-    # time_zone: Asia/Tehran
+    time_zone: Asia/Tehran
     # charset: utf8mb4
 
 redis:

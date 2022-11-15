@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
@@ -10,6 +11,7 @@ import (
 )
 
 func DBconnection(logger logger.Logger, config config.Database) (*sqlx.DB, func(), error) {
+	time.Sleep(time.Duration(20) * time.Second)
 	con, err := sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?parseTime=true", config.Mysql.Username, config.Mysql.Password, config.Mysql.Host, config.Mysql.Port, config.Mysql.Database))
 	if err != nil {
 		return nil, func() {}, err

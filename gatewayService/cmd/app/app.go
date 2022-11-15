@@ -16,7 +16,7 @@ import (
 func App() (*serverDep, func()) {
 
 	// config init
-	config, err := config.NewConfig("../config/config.yaml")
+	config, err := config.NewConfig("./config.yaml")
 	if err != nil {
 		log.Panic(err.Error())
 	}

@@ -2,7 +2,6 @@ package types
 
 type (
 	CreateTodoReq struct {
-		AccountId   uint64 `json:"accountId"`
 		CategoryId  uint64 `json:"categoryId" example:"2"`
 		Title       string `json:"title" example:"do homeWork"`
 		Description string `json:"description" example:"solve all problems in chapter 2"`

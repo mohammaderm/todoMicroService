@@ -26,6 +26,7 @@ require (
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
+	github.com/lib/pq v1.10.7
 	github.com/sirupsen/logrus v1.9.0
 	github.com/xhit/go-str2duration/v2 v2.0.0
 	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2 // indirect

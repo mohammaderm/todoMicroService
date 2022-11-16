@@ -10,28 +10,11 @@ services:
       mode: replicated
       replicas: 1
     environment:
-      POSTGRES_DB: auth
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: auth_admin
+      POSTGRES_PASSWORD: 1115444123
+      POSTGRES_MULTIPLE_DATABASES: auth, todo
     volumes:
       - ./db/postgres/tmp/db:/var/lib/postgresql/data
-
-  mysql:
-    image: mysql:8
-    cap_add:
-      - SYS_NICE
-    restart: always
-    # hostname: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: todo_admin
-      MYSQL_PASSWORD: todo_admin
-      MYSQL_DATABASE: todo
-      MYSQL_USER: todo
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./db/mysql:/var/lib/mysql
-    command: --default-authentication-plugin=mysql_native_password
 
   auth-service:
     build:
@@ -54,7 +37,6 @@ services:
       replicas: 1
     depends_on:
       - postgres
-      - mysql
       - auth-service
 
   gateway-service:
@@ -72,7 +54,6 @@ services:
       - postgres
       - auth-service
       - todo-service
-      - mysql
       
   redis:
     hostname: redis

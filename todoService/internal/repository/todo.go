@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	my "github.com/go-mysql/errors"
 	"github.com/jmoiron/sqlx"
+	"github.com/lib/pq"
 	"github.com/mohammaderm/todoMicroService/todoService/internal/models"
 )
 
@@ -66,7 +66,7 @@ func (r *repository) DeleteCat(ctx context.Context, id, accountid uint) error {
 func (r *repository) CreateCat(ctx context.Context, category *models.Category) error {
 	_, err := r.db.ExecContext(ctx, createCategory, category.Title, category.AccountId)
 	if err != nil {
-		if ok, err := my.Error(err); ok && err == my.ErrDupeKey {
+		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
 			return fmt.Errorf("%w: an category with the given title already exists", ErrUniquenessViolated)
 		}
 	}

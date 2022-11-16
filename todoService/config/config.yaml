@@ -7,13 +7,13 @@ logger:
   mode: "debug"
 
 database:
-  mysql:
+  postgres:
     database: todo
-    username: todo
-    password: todo_admin
+    username: admin
+    password: 1115444123
     # host: host.minikube.internal
-    host: mysql
-    port: 3306
+    host: postgres
+    port: 5432
     # adabter: mysql
     time_zone: Asia/Tehran
     # charset: utf8mb4

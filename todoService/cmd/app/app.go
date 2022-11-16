@@ -31,7 +31,7 @@ func App() func() {
 	}
 
 	// db connection
-	db, graceShutDown1, err := DBconnection(Logger, config.Database)
+	db, graceShutDown1, err := DBconnection(Logger, &config.Database)
 	if err != nil {
 		Logger.Panic("can not connect to db", map[string]interface{}{
 			"err": err.Error(),

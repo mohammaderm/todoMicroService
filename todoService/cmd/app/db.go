@@ -2,20 +2,25 @@ package app
 
 import (
 	"fmt"
-	"time"
 
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 	"github.com/mohammaderm/todoMicroService/todoService/config"
 	"github.com/mohammaderm/todoMicroService/todoService/pkg/logger"
 )
 
-func DBconnection(logger logger.Logger, config config.Database) (*sqlx.DB, func(), error) {
-	time.Sleep(time.Duration(20) * time.Second)
-	con, err := sqlx.Connect("mysql", fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?parseTime=true", config.Mysql.Username, config.Mysql.Password, config.Mysql.Host, config.Mysql.Port, config.Mysql.Database))
+func DBconnection(logger logger.Logger, config *config.Database) (*sqlx.DB, func(), error) {
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+		config.Postgresql.Host,
+		config.Postgresql.Port,
+		config.Postgresql.Username,
+		config.Postgresql.Password,
+		config.Postgresql.Database,
+	)
+	con, err := sqlx.Connect("postgres", dsn)
 	if err != nil {
 		return nil, func() {}, err
 	}
+
 	return con, func() {
 		if err := con.Close(); err != nil {
 			logger.Warning("failed to close db connection", map[string]interface{}{

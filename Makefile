@@ -20,8 +20,8 @@ down:
 action=up
 n=1
 migrate:
-	migrate -path ./migration/todoService -database "mysql://todo:todo_admin@tcp(0.0.0.0:3306)/todo?parseTime=true" -verbose $(action) $(n)
-	migrate -path ./migration/authService -database "postgres://admin:auth_admin@0.0.0.0:5432/auth?sslmode=disable" -verbose $(action) $(n)
+	migrate -path ./migration/todoService -database "postgres://admin:1115444123@0.0.0.0:5432/todo?sslmode=disable" -verbose $(action) $(n)
+	migrate -path ./migration/authService -database "postgres://admin:1115444123@0.0.0.0:5432/auth?sslmode=disable" -verbose $(action) $(n)
 
 migrate_create:
 	migrate create -ext sql -dir ./migration/todoService -seq category_schema

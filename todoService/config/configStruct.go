@@ -8,12 +8,12 @@ type (
 		Redis    Redis    `yaml:"redis"`
 	}
 	Database struct {
-		Mysql Mysql `yaml:"mysql"`
+		Postgresql Postgresql `yaml:"postgres"`
 	}
 	Grpc struct {
 		Port string `yaml:"port"`
 	}
-	Mysql struct {
+	Postgresql struct {
 		Database  string `yaml:"database"`
 		Username  string `yaml:"username"`
 		Password  string `yaml:"password"`

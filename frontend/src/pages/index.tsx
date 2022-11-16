@@ -5,8 +5,8 @@ export default function Home() {
 		<>
 			<Head>
 				<title>Create Next App</title>
-				<meta name="Task Manager" content="Task manager " />
-				<link rel="icon" href="/favicon.ico" />
+				<meta name="Task Manager" content="Task manager " key="name" />
+				<link rel="icon" href="/favicon.ico" key="icon" />
 			</Head>
 
 			<main>

@@ -1,5 +1,0 @@
-/* This makes the default configs of html disappear */
-@tailwind base;
-/* This makes css styles to use @apply in themselves */
-@tailwind components;
-@tailwind utilities;

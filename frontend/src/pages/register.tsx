@@ -36,7 +36,7 @@ const Register: React.FC = () => {
 				/>
 				<div className="w-full space-y-1 pt-5">
 					<Button className="w-full h-12" variant="contained">
-						Submit
+						register
 					</Button>
 					<Typography variant="subtitle2" textAlign="center" gutterBottom>
 						Already Have An Account? <Link href="/login">Login</Link>

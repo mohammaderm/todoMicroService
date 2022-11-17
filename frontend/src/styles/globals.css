@@ -21,3 +21,27 @@ ul {
 img {
 	@apply w-full object-cover;
 }
+
+/* Used in @/components/SideMenu.tsx */
+.showSlider {
+	left: 0px !important;
+}
+
+.hidePage {
+	scale: 90%;
+	@apply right-11;
+}
+
+/* Custom Components */
+@layer components {
+	.all-static * {
+		@apply static;
+	}
+	.full {
+		@apply w-full h-full;
+	}
+	.screen {
+		@apply w-screen h-screen;
+	}
+}
+/* End Of Custom Components */

@@ -379,6 +379,49 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "apiKey": []
+                    }
+                ],
+                "description": "delete todo based on todo Id. (auth required)",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Todo"
+                ],
+                "summary": "DELETE TODO",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": " ",
+                        "name": "id",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "error",
+                        "schema": {
+                            "$ref": "#/definitions/delivery.jsonResponse"
+                        }
+                    }
+                }
             }
         }
     },

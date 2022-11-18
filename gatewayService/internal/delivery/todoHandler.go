@@ -113,7 +113,6 @@ func (t *TodoHandler) Update(w http.ResponseWriter, r *http.Request) {
 // @success     200     {object} delivery.jsonResponse
 // @failure     400,500 {object} delivery.jsonResponse "error"
 // @router      /todo/{id} [delete]
-
 func (t *TodoHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if id == "" {

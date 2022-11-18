@@ -6,6 +6,7 @@ import Task from "@/components/Task";
 import SideMenu from "@/components/SideMenu";
 import Button from "@mui/material/Button";
 import { useReducer, useState } from "react";
+import AddTask from "@/components/AddTask";
 
 const dispatchSliderHandler = (prev: boolean, action: boolean): boolean => {
 	let lessThan640 = false;
@@ -25,19 +26,14 @@ const dispatchSliderHandler = (prev: boolean, action: boolean): boolean => {
 
 export default function Home() {
 	const [slider, dispatchSlider] = useReducer(dispatchSliderHandler, false);
+	const [showAddTask, setShowAddTask] = useState(false);
+	const [showAddCategory, setShowAddCategory] = useState(false);
 
-	const changeSlider: React.MouseEventHandler<SVGSVGElement> = (e) => {
+	const changeSlider: React.MouseEventHandler<SVGSVGElement> = (e) =>
 		dispatchSlider(!slider);
-	};
 
-	let lessThan640 = false;
-	if (typeof window === "object") {
-		lessThan640 =
-			Math.max(
-				document?.documentElement.clientWidth || 0,
-				window?.innerWidth || 0
-			) <= 640;
-	}
+	const changeShowAddTask: React.MouseEventHandler<HTMLButtonElement> = (e) =>
+		setShowAddTask(true);
 
 	return (
 		<>
@@ -45,7 +41,13 @@ export default function Home() {
 				<title>Task Manager</title>
 			</Head>
 
-			<SideMenu slider={slider} setSlider={dispatchSlider}>
+			<SideMenu
+				slider={slider}
+				setSlider={dispatchSlider}
+				showAddCategory={showAddCategory}
+				setShowAddCategory={setShowAddCategory}
+			>
+				{showAddTask && <AddTask set={setShowAddTask} />}
 				<div className="bg-slate-100 h-full p-5 relative rounded-2xl">
 					<MenuSharpIcon
 						className="cursor-pointer h-[40px] w-[40px] mb-6 text-gray-700"
@@ -69,6 +71,7 @@ export default function Home() {
 					<Button
 						variant="contained"
 						className="rounded-full bg-blue-700 cursor-pointer h-[64px] w-[64px] absolute right-5 bottom-5 p-4"
+						onClick={changeShowAddTask}
 					>
 						<AddSharpIcon className="h-full w-full" htmlColor="white" />
 					</Button>

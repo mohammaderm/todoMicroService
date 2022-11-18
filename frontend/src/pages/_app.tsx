@@ -15,8 +15,16 @@ export default function App({ Component, pageProps }: AppProps) {
 				<link rel="icon" href="/favicon.ico" key="icon" />
 			</Head>
 			<div
-				id="backdrop"
+				id="backdrop50"
 				className="screen fixed inset-0 z-50 pointer-events-none opacity-40"
+			></div>
+			<div
+				id="backdrop100"
+				className="screen fixed inset-0 z-[100] pointer-events-none opacity-40"
+			></div>
+			<div
+				id="overlay110"
+				className="screen fixed inset-0 z-[110] pointer-events-none"
 			></div>
 			<Component {...pageProps} />
 		</>

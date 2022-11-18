@@ -54,30 +54,33 @@ const SideMenu: React.FC<SideMenuProps> = (props) => {
 						props.slider && "showSlider"
 					}`}
 				>
-					<div className="overflow-y-scroll h-full w-full space-y-3">
-						<ToggleButtonGroup
-							className="w-full"
-							orientation="vertical"
-							value={props.view}
-							exclusive
-							onChange={handleChange}
-						>
-							{props.categories.map((value) => (
-								<ToggleButton
-									key={value}
-									className="bg-blue-500 hover:bg-blue-400 text-white font-bold capitalize"
-									value={value}
-								>
-									{value}
-								</ToggleButton>
-							))}
-						</ToggleButtonGroup>
+					<div className="overflow-y-scroll space-y-3 h-full w-full">
+						{props.categories.length !== 0 && (
+							<ToggleButtonGroup
+								className="w-full space-y-[1px]"
+								orientation="vertical"
+								value={props.view}
+								exclusive
+								onChange={handleChange}
+							>
+								{props.categories.map((value) => (
+									<ToggleButton
+										//! This has to change to id
+										key={value}
+										className="bg-blue-500 hover:bg-blue-400 text-white font-bold capitalize w-full"
+										value={value}
+									>
+										{value}
+									</ToggleButton>
+								))}
+							</ToggleButtonGroup>
+						)}
 						<Button
 							variant="contained"
 							className="text-xl font-bold"
 							onClick={() => props.setShowAddCategory(true)}
 						>
-							<AddSharpIcon className="" htmlColor="white" />
+							<AddSharpIcon htmlColor="white" />
 						</Button>
 					</div>
 				</div>

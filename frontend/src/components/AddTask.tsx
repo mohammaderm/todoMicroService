@@ -68,7 +68,6 @@ const AddTask: React.FC<AddTaskProps> = (props) => {
 						variant="contained"
 						className="flex-grow-[0.7]"
 						onClick={() => {
-							console.log("once?");
 							props.dispatchTasks({
 								method: "addTasks",
 								category: props.category,

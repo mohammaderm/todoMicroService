@@ -61,7 +61,12 @@ const dispatchTasksHandler = (
 			return { ...prev };
 		case "updateTask":
 			index = findIndex(prev[action.category], (value) => {
-				return value.id === action.task.id;
+				//! This has to change to this
+				// value.id === action.task.id
+				return (
+					value.title === action.task.title &&
+					value.description === action.task.description
+				);
 			});
 			if (index !== -1) {
 				prev[action.category][index] = action.task;
@@ -99,7 +104,7 @@ export default function Home() {
 	return (
 		<>
 			<Head>
-				<title>{view}</title>
+				<title>{(view && view) || "Task Manager"}</title>
 			</Head>
 			<SideMenu
 				slider={slider}
@@ -118,7 +123,7 @@ export default function Home() {
 						category={view}
 					/>
 				)}
-				<div className="bg-slate-100 h-full p-5 relative rounded-2xl">
+				<div className="flex flex-col bg-slate-100 h-full p-5 relative rounded-2xl">
 					<MenuSharpIcon
 						className="cursor-pointer h-[40px] w-[40px] mb-6 text-gray-700"
 						onClick={changeSlider}
@@ -136,16 +141,16 @@ export default function Home() {
 						</Typography>
 					)}
 					{/* Tasks */}
-					<div className="space-y-3">
+					<div className="space-y-3 overflow-y-scroll flex-grow">
 						{tasks[view] &&
 							tasks[view].map((value) => {
 								return (
 									<Task
+										//! This has to change to id
 										key={value.title + value.description}
-										title={value.title}
-										description={value.description}
-										due_date={value.due_date}
-										status={value.statue}
+										dispatchTasks={dispatchTasks}
+										category={view}
+										task={value}
 									/>
 								);
 							})}

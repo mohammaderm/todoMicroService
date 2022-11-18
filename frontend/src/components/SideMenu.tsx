@@ -2,9 +2,9 @@ import Button from "@mui/material/Button";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import AddSharpIcon from "@mui/icons-material/AddSharp";
 import ToggleButton from "./Custom/ToggleButton";
-import { useState } from "react";
 import { createPortal } from "react-dom";
 import AddCategory from "./AddCategory";
+import { taskAction } from "@/types/task";
 
 interface BackdropProps {
 	setSlider: (value: boolean) => void;
@@ -27,6 +27,8 @@ interface SideMenuProps extends React.PropsWithChildren {
 	setShowAddCategory: (value: boolean) => void;
 	view: string;
 	setView: (value: string) => void;
+	categories: string[];
+	dispatchTasks: (value: taskAction) => void;
 }
 
 const SideMenu: React.FC<SideMenuProps> = (props) => {
@@ -40,7 +42,12 @@ const SideMenu: React.FC<SideMenuProps> = (props) => {
 	return (
 		<>
 			{props.slider && <Backdrop setSlider={props.setSlider} />}
-			{props.showAddCategory && <AddCategory set={props.setShowAddCategory} />}
+			{props.showAddCategory && (
+				<AddCategory
+					set={props.setShowAddCategory}
+					dispatchTasks={props.dispatchTasks}
+				/>
+			)}
 			<div className="flex bg-sky-900 h-screen">
 				<div
 					className={`p-12 pr-[3rem] min-w-[304px] w-[304px] smMax:fixed smMax:-left-[19rem] bg-sky-900 z-[60] h-full transition-all ${
@@ -55,24 +62,15 @@ const SideMenu: React.FC<SideMenuProps> = (props) => {
 							exclusive
 							onChange={handleChange}
 						>
-							<ToggleButton
-								className="bg-blue-500 hover:bg-blue-400 text-white font-bold"
-								value="first"
-							>
-								First Category
-							</ToggleButton>
-							<ToggleButton
-								className="bg-blue-500 hover:bg-blue-400 text-white font-bold"
-								value="second"
-							>
-								Second Category
-							</ToggleButton>
-							<ToggleButton
-								className="bg-blue-500 hover:bg-blue-400 text-white font-bold"
-								value="third"
-							>
-								Third Category
-							</ToggleButton>
+							{props.categories.map((value) => (
+								<ToggleButton
+									key={value}
+									className="bg-blue-500 hover:bg-blue-400 text-white font-bold capitalize"
+									value={value}
+								>
+									{value}
+								</ToggleButton>
+							))}
 						</ToggleButtonGroup>
 						<Button
 							variant="contained"

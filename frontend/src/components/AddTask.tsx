@@ -1,6 +1,8 @@
+import { taskAction } from "@/types/task";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import AddContainer from "./AddContainer";
 
@@ -20,9 +22,14 @@ const Backdrop: React.FC<BackdropProps> = (props) => {
 
 interface AddTaskProps {
 	set: (value: boolean) => void;
+	dispatchTasks: (value: taskAction) => void;
+	category: string;
 }
 
 const AddTask: React.FC<AddTaskProps> = (props) => {
+	const [title, setTitle] = useState("");
+	const [description, setDescription] = useState("");
+
 	return (
 		<>
 			<Backdrop set={props.set} />
@@ -36,12 +43,16 @@ const AddTask: React.FC<AddTaskProps> = (props) => {
 						label="Title"
 						variant="outlined"
 						className="bg-white shadow-md"
+						value={title}
+						onChange={(e) => setTitle(e.currentTarget.value)}
 					/>
 					<TextField
 						id="description"
 						label="Description"
 						variant="outlined"
 						className="bg-white shadow-md"
+						value={description}
+						onChange={(e) => setDescription(e.currentTarget.value)}
 					/>
 				</div>
 				<div className="flex space-x-2 h-12">
@@ -53,7 +64,24 @@ const AddTask: React.FC<AddTaskProps> = (props) => {
 					>
 						Cancel
 					</Button>
-					<Button variant="contained" className="flex-grow-[0.7]">
+					<Button
+						variant="contained"
+						className="flex-grow-[0.7]"
+						onClick={() => {
+							console.log("once?");
+							props.dispatchTasks({
+								method: "addTasks",
+								category: props.category,
+								tasks: [
+									{
+										title: title,
+										description: description,
+									},
+								],
+							} as taskAction);
+							props.set(false);
+						}}
+					>
 						Add
 					</Button>
 				</div>

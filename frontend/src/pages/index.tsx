@@ -7,7 +7,8 @@ import SideMenu from "@/components/SideMenu";
 import Button from "@mui/material/Button";
 import { useReducer, useState } from "react";
 import AddTask from "@/components/AddTask";
-import taskType from "@/types/task";
+import taskType, { taskAction } from "@/types/task";
+import findIndex from "lodash/findIndex";
 
 const dispatchSliderHandler = (prev: boolean, action: boolean): boolean => {
 	let lessThan640 = false;
@@ -25,12 +26,69 @@ const dispatchSliderHandler = (prev: boolean, action: boolean): boolean => {
 	return false;
 };
 
+const dispatchTasksHandler = (
+	prev: Record<string, taskType[]>,
+	action: taskAction
+): Record<string, taskType[]> => {
+	let data = {} as Record<string, taskType[]>;
+	let index = -1;
+	switch (action.method) {
+		case "addCategories":
+			data = { ...prev };
+			for (let i = 0; i < action.categories.length; i++) {
+				data[action.categories[i]] = [];
+			}
+			return data;
+		case "replaceCategories":
+			for (let i = 0; i < action.categories.length; i++) {
+				data[action.categories[i]] = [];
+			}
+			return data;
+		case "deleteCategory":
+			Object.keys(prev).forEach((key) => {
+				if (key !== action.category) {
+					data[key] = prev[key];
+				}
+			});
+			return data;
+		case "addTasks":
+			prev[action.category] = prev[action.category]
+				? [...prev[action.category], ...action.tasks]
+				: [...action.tasks];
+			return { ...prev };
+		case "replaceTasks":
+			prev[action.category] = [...action.tasks];
+			return { ...prev };
+		case "updateTask":
+			index = findIndex(prev[action.category], (value) => {
+				return value.id === action.task.id;
+			});
+			if (index !== -1) {
+				prev[action.category][index] = action.task;
+			}
+			return { ...prev };
+		case "deleteTask":
+			index = findIndex(prev[action.category], (value) => {
+				return value.id === action.task.id;
+			});
+			if (index !== -1) {
+				prev[action.category] = [
+					...prev[action.category].slice(0, index),
+					...prev[action.category].slice(index + 1),
+				];
+			}
+			return { ...prev };
+		default:
+			return { ...prev };
+	}
+};
+
 export default function Home() {
 	const [slider, dispatchSlider] = useReducer(dispatchSliderHandler, false);
 	const [showAddTask, setShowAddTask] = useState(false);
 	const [showAddCategory, setShowAddCategory] = useState(false);
 	const [view, setView] = useState("");
-	const [tasks, setTasks] = useState<Record<string, taskType[]>>({});
+	const [tasks, dispatchTasks] = useReducer(dispatchTasksHandler, {});
 
 	const changeSlider: React.MouseEventHandler<SVGSVGElement> = (e) =>
 		dispatchSlider(!slider);
@@ -41,9 +99,8 @@ export default function Home() {
 	return (
 		<>
 			<Head>
-				<title>Task Manager</title>
+				<title>{view}</title>
 			</Head>
-
 			<SideMenu
 				slider={slider}
 				setSlider={dispatchSlider}
@@ -51,28 +108,40 @@ export default function Home() {
 				setShowAddCategory={setShowAddCategory}
 				view={view}
 				setView={setView}
+				categories={Object.keys(tasks)}
+				dispatchTasks={dispatchTasks}
 			>
-				{showAddTask && <AddTask set={setShowAddTask} />}
+				{showAddTask && (
+					<AddTask
+						set={setShowAddTask}
+						dispatchTasks={dispatchTasks}
+						category={view}
+					/>
+				)}
 				<div className="bg-slate-100 h-full p-5 relative rounded-2xl">
 					<MenuSharpIcon
 						className="cursor-pointer h-[40px] w-[40px] mb-6 text-gray-700"
 						onClick={changeSlider}
 					/>
 					<Typography className="capitalize text-gray-800" variant="h3">
-						Title comes here
+						{view && view}
+						{!view && "no category selected"}
 					</Typography>
-					<Typography
-						className="text-gray-600 mb-5 mt-9 uppercase"
-						variant="body2"
-					>
-						Tasks
-					</Typography>
+					{view && (
+						<Typography
+							className="mb-5 mt-9 uppercase border-0 border-b-[1px] border-solid border-gray-400 text-gray-500"
+							variant="body2"
+						>
+							Tasks
+						</Typography>
+					)}
 					{/* Tasks */}
 					<div className="space-y-3">
 						{tasks[view] &&
 							tasks[view].map((value) => {
 								return (
 									<Task
+										key={value.title + value.description}
 										title={value.title}
 										description={value.description}
 										due_date={value.due_date}
@@ -82,13 +151,15 @@ export default function Home() {
 							})}
 					</div>
 					{/* End Of Tasks */}
-					<Button
-						variant="contained"
-						className="rounded-full bg-blue-700 cursor-pointer h-[64px] w-[64px] absolute right-5 bottom-5 p-4"
-						onClick={changeShowAddTask}
-					>
-						<AddSharpIcon className="h-full w-full" htmlColor="white" />
-					</Button>
+					{view && (
+						<Button
+							variant="contained"
+							className="rounded-full bg-blue-700 cursor-pointer h-[64px] w-[64px] absolute right-5 bottom-5 p-4"
+							onClick={changeShowAddTask}
+						>
+							<AddSharpIcon className="h-full w-full" htmlColor="white" />
+						</Button>
+					)}
 				</div>
 			</SideMenu>
 		</>

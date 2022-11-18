@@ -21,11 +21,11 @@ const Task: React.FC<TaskProps> = (props) => {
 			<div className="flex flex-col justify-center align-middle">
 				{props.status && (
 					<Typography variant="body1" className="line-through text-gray-600">
-						Some Description
+						{props.title}
 					</Typography>
 				)}
 				{!props.status && (
-					<Typography variant="body1">Some Description</Typography>
+					<Typography variant="body1">{props.title}</Typography>
 				)}
 			</div>
 		</div>

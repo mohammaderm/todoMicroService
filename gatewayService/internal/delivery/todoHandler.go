@@ -16,7 +16,6 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type (
@@ -28,9 +27,10 @@ type (
 		Create(w http.ResponseWriter, r *http.Request)
 		Delete(w http.ResponseWriter, r *http.Request)
 		GetAll(w http.ResponseWriter, r *http.Request)
-		UpdateStatus(w http.ResponseWriter, r *http.Request)
-		UpdatePriority(w http.ResponseWriter, r *http.Request)
-		UpdateDueDate(w http.ResponseWriter, r *http.Request)
+		Update(w http.ResponseWriter, r *http.Request)
+		// UpdateStatus(w http.ResponseWriter, r *http.Request)
+		// UpdatePriority(w http.ResponseWriter, r *http.Request)
+		// UpdateDueDate(w http.ResponseWriter, r *http.Request)
 	}
 )
 
@@ -43,17 +43,17 @@ func NewTodoHandler(logger logger.Logger, cfg *config.Service) TodoHandlerContra
 	}
 }
 
-// @summary     UPDATE TODO DUE_DATE
-// @description update todo due_date based on todo Id and due_date. (auth required)
+// @summary     UPDATE TODO
+// @description update todo based on todo Id. (auth required)
 // @tags        Todo
 // @accept      json
 // @Security apiKey
-// @param       dueDate   body     types.UpdateDueDate true " "
 // @param       id   path     int true " "
+// @param       todo   body     types.UpdateTodoReq true " "
 // @success     200     {object} delivery.jsonResponse
 // @failure     400,500 {object} delivery.jsonResponse "error"
-// @router      /todo/due_date/{id} [put]
-func (t *TodoHandler) UpdateDueDate(w http.ResponseWriter, r *http.Request) {
+// @router      /todo/{id} [put]
+func (t *TodoHandler) Update(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	if id == "" {
 		t.errorJSON(w, errors.New("failed to handle request"), http.StatusBadRequest)
@@ -64,9 +64,12 @@ func (t *TodoHandler) UpdateDueDate(w http.ResponseWriter, r *http.Request) {
 		t.errorJSON(w, errors.New("failed to handle request"), http.StatusBadRequest)
 		return
 	}
-	var priority types.UpdateDueDate
-	t.readJSON(w, r, &priority)
-	dueDate, _ := time.Parse("2006-01-02 15:04:05", priority.DueDate)
+	var req types.UpdateTodoReq
+	err = t.readJSON(w, r, &req)
+	if err != nil {
+		t.errorJSON(w, errors.New("can not parse values"), http.StatusBadRequest)
+		return
+	}
 
 	accountInfo := r.Context().Value(accountInfoKeyCtx).(types.AccountInfo)
 	// grpc request
@@ -78,10 +81,15 @@ func (t *TodoHandler) UpdateDueDate(w http.ResponseWriter, r *http.Request) {
 	client := proto.NewTodoServiceClient(conn)
 	ctx, cancel := context.WithTimeout(r.Context(), time.Duration(t.cfg.Todo.ContextDeadline)*time.Second)
 	defer cancel()
-	respons, err := client.UpdateDueDate(ctx, &proto.UpdateDueDateRequest{
-		AccountId: accountInfo.Id,
-		Id:        uint64(idInt),
-		DueDate:   timestamppb.New(dueDate),
+	respons, err := client.Update(ctx, &proto.UpdateRequest{
+		AccountId:   accountInfo.Id,
+		Id:          uint64(idInt),
+		CategoryId:  req.CategoryId,
+		Title:       req.Title,
+		Description: req.Description,
+		Status:      req.Status,
+		DueDate:     req.DueDate,
+		Priority:    req.Priority,
 	})
 	if err != nil {
 		t.errorJSON(w, err, http.StatusInternalServerError)
@@ -96,105 +104,7 @@ func (t *TodoHandler) UpdateDueDate(w http.ResponseWriter, r *http.Request) {
 	t.writeJSON(w, http.StatusOK, payload)
 }
 
-// @summary     UPDATE TODO PRIORITY
-// @description update todo priority based on todo Id and priority. (auth required)
-// @tags        Todo
-// @accept      json
-// @Security apiKey
-// @param       priority   body     types.UpdatePriority true " "
-// @param       id   path     int true " "
-// @success     200     {object} delivery.jsonResponse
-// @failure     400,500 {object} delivery.jsonResponse "error"
-// @router      /todo/priority/{id} [put]
-func (t *TodoHandler) UpdatePriority(w http.ResponseWriter, r *http.Request) {
-	id := chi.URLParam(r, "id")
-	if id == "" {
-		t.errorJSON(w, errors.New("failed to handle request"), http.StatusBadRequest)
-		return
-	}
-	idInt, err := strconv.Atoi(id)
-	if err != nil {
-		t.errorJSON(w, errors.New("failed to handle request"), http.StatusBadRequest)
-		return
-	}
-	var priority types.UpdatePriority
-	t.readJSON(w, r, &priority)
-
-	accountInfo := r.Context().Value(accountInfoKeyCtx).(types.AccountInfo)
-	// grpc request
-	conn, err := grpc.DialContext(r.Context(), t.cfg.Todo.Host+":"+t.cfg.Todo.Port, grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		t.errorJSON(w, errors.New("internal server error"), http.StatusInternalServerError)
-		return
-	}
-	client := proto.NewTodoServiceClient(conn)
-	ctx, cancel := context.WithTimeout(r.Context(), time.Duration(t.cfg.Todo.ContextDeadline)*time.Second)
-	defer cancel()
-	respons, err := client.UpdatePriority(ctx, &proto.UpdatePriorityRequest{
-		AccountId: accountInfo.Id,
-		Id:        uint64(idInt),
-		Priority:  uint64(priority.Priority),
-	})
-	if err != nil {
-		t.errorJSON(w, err, http.StatusInternalServerError)
-		return
-	}
-	defer r.Body.Close()
-	payload := jsonResponse{
-		Error:   respons.Error,
-		Message: respons.Message,
-		Data:    nil,
-	}
-	t.writeJSON(w, http.StatusOK, payload)
-}
-
-// @summary     UPDATE TODO STATUS
-// @description update todo Status based on todo Id. (auth required)
-// @tags        Todo
-// @accept      json
-// @Security apiKey
-// @param       id   path     int true " "
-// @success     200     {object} delivery.jsonResponse
-// @failure     400,500 {object} delivery.jsonResponse "error"
-// @router      /todo/status/{id} [put]
-func (t *TodoHandler) UpdateStatus(w http.ResponseWriter, r *http.Request) {
-	id := chi.URLParam(r, "id")
-	if id == "" {
-		t.errorJSON(w, errors.New("failed to handle request"), http.StatusBadRequest)
-		return
-	}
-	idInt, err := strconv.Atoi(id)
-	if err != nil {
-		t.errorJSON(w, errors.New("failed to handle request"), http.StatusBadRequest)
-		return
-	}
-
-	accountInfo := r.Context().Value(accountInfoKeyCtx).(types.AccountInfo)
-	// grpc request
-	conn, err := grpc.DialContext(r.Context(), t.cfg.Todo.Host+":"+t.cfg.Todo.Port, grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		t.errorJSON(w, errors.New("internal server error"), http.StatusInternalServerError)
-		return
-	}
-	client := proto.NewTodoServiceClient(conn)
-	ctx, cancel := context.WithTimeout(r.Context(), time.Duration(t.cfg.Todo.ContextDeadline)*time.Second)
-	defer cancel()
-	respons, err := client.UpdateStatus(ctx, &proto.UpdateStatusRequest{
-		AccountId: accountInfo.Id,
-		Id:        uint64(idInt),
-	})
-	if err != nil {
-		t.errorJSON(w, err, http.StatusInternalServerError)
-		return
-	}
-	defer r.Body.Close()
-	payload := jsonResponse{
-		Error:   respons.Error,
-		Message: respons.Message,
-		Data:    nil,
-	}
-	t.writeJSON(w, http.StatusOK, payload)
-}
+//////////////////////////////////////////////////////////////////////////
 
 // @summary     DELETE TODO
 // @description delete todo based on todo Id. (auth required)

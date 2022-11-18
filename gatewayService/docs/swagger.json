@@ -273,61 +273,6 @@
                 }
             }
         },
-        "/todo/due_date/{id}": {
-            "put": {
-                "security": [
-                    {
-                        "apiKey": []
-                    }
-                ],
-                "description": "update todo due_date based on todo Id and due_date. (auth required)",
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Todo"
-                ],
-                "summary": "UPDATE TODO DUE_DATE",
-                "parameters": [
-                    {
-                        "description": " ",
-                        "name": "dueDate",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/types.UpdateDueDate"
-                        }
-                    },
-                    {
-                        "type": "integer",
-                        "description": " ",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/delivery.jsonResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "error",
-                        "schema": {
-                            "$ref": "#/definitions/delivery.jsonResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "error",
-                        "schema": {
-                            "$ref": "#/definitions/delivery.jsonResponse"
-                        }
-                    }
-                }
-            }
-        },
         "/todo/getall": {
             "get": {
                 "security": [
@@ -373,83 +318,37 @@
                 }
             }
         },
-        "/todo/priority/{id}": {
+        "/todo/{id}": {
             "put": {
                 "security": [
                     {
                         "apiKey": []
                     }
                 ],
-                "description": "update todo priority based on todo Id and priority. (auth required)",
+                "description": "update todo based on todo Id. (auth required)",
                 "consumes": [
                     "application/json"
                 ],
                 "tags": [
                     "Todo"
                 ],
-                "summary": "UPDATE TODO PRIORITY",
+                "summary": "UPDATE TODO",
                 "parameters": [
                     {
+                        "type": "integer",
                         "description": " ",
-                        "name": "priority",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": " ",
+                        "name": "todo",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/types.UpdatePriority"
+                            "$ref": "#/definitions/types.UpdateTodoReq"
                         }
-                    },
-                    {
-                        "type": "integer",
-                        "description": " ",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/delivery.jsonResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "error",
-                        "schema": {
-                            "$ref": "#/definitions/delivery.jsonResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "error",
-                        "schema": {
-                            "$ref": "#/definitions/delivery.jsonResponse"
-                        }
-                    }
-                }
-            }
-        },
-        "/todo/status/{id}": {
-            "put": {
-                "security": [
-                    {
-                        "apiKey": []
-                    }
-                ],
-                "description": "update todo Status based on todo Id. (auth required)",
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Todo"
-                ],
-                "summary": "UPDATE TODO STATUS",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": " ",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -557,21 +456,32 @@
                 }
             }
         },
-        "types.UpdateDueDate": {
+        "types.UpdateTodoReq": {
             "type": "object",
             "properties": {
+                "categoryid": {
+                    "type": "integer",
+                    "example": 2
+                },
+                "description": {
+                    "type": "string",
+                    "example": "solve all problems in chapter 2"
+                },
                 "due_date": {
                     "type": "string",
-                    "example": "2022-09-12 12:50:05"
-                }
-            }
-        },
-        "types.UpdatePriority": {
-            "type": "object",
-            "properties": {
+                    "example": "2022-09-25 20:35:01"
+                },
                 "priority": {
                     "type": "integer",
-                    "example": 5
+                    "example": 2
+                },
+                "status": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "title": {
+                    "type": "string",
+                    "example": "do homework"
                 }
             }
         }

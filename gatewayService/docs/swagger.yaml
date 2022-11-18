@@ -56,17 +56,26 @@ definitions:
         example: example5040
         type: string
     type: object
-  types.UpdateDueDate:
+  types.UpdateTodoReq:
     properties:
-      due_date:
-        example: "2022-09-12 12:50:05"
-        type: string
-    type: object
-  types.UpdatePriority:
-    properties:
-      priority:
-        example: 5
+      categoryid:
+        example: 2
         type: integer
+      description:
+        example: solve all problems in chapter 2
+        type: string
+      due_date:
+        example: "2022-09-25 20:35:01"
+        type: string
+      priority:
+        example: 2
+        type: integer
+      status:
+        example: true
+        type: boolean
+      title:
+        example: do homework
+        type: string
     type: object
 host: localhost:8080
 info:
@@ -213,6 +222,41 @@ paths:
       summary: GETALL CATEGORY
       tags:
       - Category
+  /todo/{id}:
+    put:
+      consumes:
+      - application/json
+      description: update todo based on todo Id. (auth required)
+      parameters:
+      - description: ' '
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: ' '
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/types.UpdateTodoReq'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/delivery.jsonResponse'
+        "400":
+          description: error
+          schema:
+            $ref: '#/definitions/delivery.jsonResponse'
+        "500":
+          description: error
+          schema:
+            $ref: '#/definitions/delivery.jsonResponse'
+      security:
+      - apiKey: []
+      summary: UPDATE TODO
+      tags:
+      - Todo
   /todo/create:
     post:
       consumes:
@@ -243,41 +287,6 @@ paths:
       summary: CREATE TODO
       tags:
       - Todo
-  /todo/due_date/{id}:
-    put:
-      consumes:
-      - application/json
-      description: update todo due_date based on todo Id and due_date. (auth required)
-      parameters:
-      - description: ' '
-        in: body
-        name: dueDate
-        required: true
-        schema:
-          $ref: '#/definitions/types.UpdateDueDate'
-      - description: ' '
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/delivery.jsonResponse'
-        "400":
-          description: error
-          schema:
-            $ref: '#/definitions/delivery.jsonResponse'
-        "500":
-          description: error
-          schema:
-            $ref: '#/definitions/delivery.jsonResponse'
-      security:
-      - apiKey: []
-      summary: UPDATE TODO DUE_DATE
-      tags:
-      - Todo
   /todo/getall:
     get:
       consumes:
@@ -304,70 +313,6 @@ paths:
       security:
       - apiKey: []
       summary: GETALL TODO
-      tags:
-      - Todo
-  /todo/priority/{id}:
-    put:
-      consumes:
-      - application/json
-      description: update todo priority based on todo Id and priority. (auth required)
-      parameters:
-      - description: ' '
-        in: body
-        name: priority
-        required: true
-        schema:
-          $ref: '#/definitions/types.UpdatePriority'
-      - description: ' '
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/delivery.jsonResponse'
-        "400":
-          description: error
-          schema:
-            $ref: '#/definitions/delivery.jsonResponse'
-        "500":
-          description: error
-          schema:
-            $ref: '#/definitions/delivery.jsonResponse'
-      security:
-      - apiKey: []
-      summary: UPDATE TODO PRIORITY
-      tags:
-      - Todo
-  /todo/status/{id}:
-    put:
-      consumes:
-      - application/json
-      description: update todo Status based on todo Id. (auth required)
-      parameters:
-      - description: ' '
-        in: path
-        name: id
-        required: true
-        type: integer
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/delivery.jsonResponse'
-        "400":
-          description: error
-          schema:
-            $ref: '#/definitions/delivery.jsonResponse'
-        "500":
-          description: error
-          schema:
-            $ref: '#/definitions/delivery.jsonResponse'
-      security:
-      - apiKey: []
-      summary: UPDATE TODO STATUS
       tags:
       - Todo
 securityDefinitions:

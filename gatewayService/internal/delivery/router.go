@@ -47,9 +47,7 @@ func RouterProvider(rp *RouteProvider) http.Handler {
 		r.Post("/create", rp.TodoHandler.Create)
 		r.Get("/getAll", rp.TodoHandler.GetAll)
 		r.Delete("/{id}", rp.TodoHandler.Delete)
-		r.Put("/status/{id}", rp.TodoHandler.UpdateStatus)
-		r.Put("/priority/{id}", rp.TodoHandler.UpdatePriority)
-		r.Put("/due_date/{id}", rp.TodoHandler.UpdateDueDate)
+		r.Put("/{id}", rp.TodoHandler.Update)
 	})
 
 	r.Route("/category", func(r chi.Router) {

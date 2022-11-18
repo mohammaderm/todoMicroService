@@ -2,6 +2,7 @@ package app
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/mohammaderm/todoMicroService/todoService/config"
@@ -9,6 +10,7 @@ import (
 )
 
 func DBconnection(logger logger.Logger, config *config.Database) (*sqlx.DB, func(), error) {
+	time.Sleep(time.Duration(20) * time.Second)
 	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		config.Postgresql.Host,
 		config.Postgresql.Port,

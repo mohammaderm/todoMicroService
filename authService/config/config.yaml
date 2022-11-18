@@ -17,8 +17,8 @@ auth:
 database:
   postgresql:
     database: auth
-    username: admin
-    password: 1115444123
+    username: auth_admin
+    password: 123456789
     # host: host.minikube.internal
     host: postgres
     port: 5432

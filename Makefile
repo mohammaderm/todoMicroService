@@ -8,7 +8,8 @@ build:
 	sudo docker compose build
 
 run:
-	sudo docker compose up --abort-on-container-exit
+	sudo docker compose up 
+	# --abort-on-container-exit
 
 run_build:
 	sudo docker compose down
@@ -20,8 +21,8 @@ down:
 action=up
 n=1
 migrate:
-	migrate -path ./migration/todoService -database "postgres://admin:1115444123@0.0.0.0:5432/todo?sslmode=disable" -verbose $(action) $(n)
-	migrate -path ./migration/authService -database "postgres://admin:1115444123@0.0.0.0:5432/auth?sslmode=disable" -verbose $(action) $(n)
+	migrate -path ./migration/todoService -database "postgres://todo_admin:123456789@0.0.0.0:5432/todo?sslmode=disable" -verbose $(action) $(n)
+	migrate -path ./migration/authService -database "postgres://auth_admin:123456789@0.0.0.0:5432/auth?sslmode=disable" -verbose $(action) $(n)
 
 migrate_create:
 	migrate create -ext sql -dir ./migration/todoService -seq category_schema

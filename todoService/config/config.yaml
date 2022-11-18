@@ -9,8 +9,8 @@ logger:
 database:
   postgres:
     database: todo
-    username: admin
-    password: 1115444123
+    username: todo_admin
+    password: 123456789
     # host: host.minikube.internal
     host: postgres
     port: 5432

@@ -2,6 +2,11 @@ services:
 
   postgres:
     image: postgres:14 
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "auth_admin" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
     restart: always
     ports:
       - "5432:5432"
@@ -10,11 +15,12 @@ services:
       mode: replicated
       replicas: 1
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: 1115444123
-      POSTGRES_MULTIPLE_DATABASES: auth, todo
+      POSTGRES_USER: auth_admin
+      POSTGRES_PASSWORD: 123456789
+      POSTGRES_DB: auth  
     volumes:
       - ./db/postgres/tmp/db:/var/lib/postgresql/data
+      - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
 
   auth-service:
     build:

@@ -29,9 +29,6 @@ type (
 		Delete(w http.ResponseWriter, r *http.Request)
 		GetAll(w http.ResponseWriter, r *http.Request)
 		Update(w http.ResponseWriter, r *http.Request)
-		// UpdateStatus(w http.ResponseWriter, r *http.Request)
-		// UpdatePriority(w http.ResponseWriter, r *http.Request)
-		// UpdateDueDate(w http.ResponseWriter, r *http.Request)
 	}
 )
 

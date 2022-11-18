@@ -42,7 +42,7 @@ func (t *TodoServer) Update(ctx context.Context, req *proto.UpdateRequest) (*pro
 	}
 	return &proto.UpdateRespons{
 		Error:   false,
-		Message: "succesfully deleted",
+		Message: "succesfully updated",
 	}, nil
 }
 

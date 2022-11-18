@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/mohammaderm/todoMicroService/gatewayService/pkg/logger"
+	grpcError "google.golang.org/grpc/status"
 )
 
 type jsonResponse struct {
@@ -73,7 +74,14 @@ func (h HandlerHelper) errorJSON(w http.ResponseWriter, err error, status ...int
 
 	var payload jsonResponse
 	payload.Error = true
-	payload.Message = err.Error()
+
+	st, ok := grpcError.FromError(err)
+	if ok {
+		payload.Message = st.Message()
+	}
+	if !ok {
+		payload.Message = err.Error()
+	}
 
 	return h.writeJSON(w, statusCode, payload)
 }

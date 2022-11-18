@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
@@ -25,9 +24,7 @@ type TodoRepository interface {
 	Create(ctx context.Context, todo *models.Todo) error
 	Delete(ctx context.Context, id, accountid uint) error
 	GetAll(ctx context.Context, accountid uint, offset int) (*[]models.Todo, error)
-	UpdateStatus(ctx context.Context, id, accountid uint) error
-	UpdatePriority(ctx context.Context, id, accountid uint, priority int) error
-	UpdateDueDate(ctx context.Context, id, accountid uint, due_date time.Time) error
+	Update(ctx context.Context, todo *models.Todo) error
 
 	// category
 	CreateCat(ctx context.Context, category *models.Category) error
@@ -74,24 +71,15 @@ func (r *repository) CreateCat(ctx context.Context, category *models.Category) e
 }
 
 // todo
-func (r *repository) UpdateStatus(ctx context.Context, id, accountid uint) error {
-	_, err := r.db.ExecContext(ctx, updateStatus, id, accountid)
+
+func (r *repository) Update(ctx context.Context, todo *models.Todo) error {
+	result, err := r.db.ExecContext(ctx, updateTodo, todo.Title, todo.CategoryId, todo.Description, todo.Status, todo.DueDate, todo.Priority, todo.Id, todo.AccountId)
 	if err != nil {
 		return err
 	}
-	return nil
-}
-func (r *repository) UpdatePriority(ctx context.Context, id, accountid uint, priority int) error {
-	_, err := r.db.ExecContext(ctx, updatePriority, priority, id, accountid)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-func (r *repository) UpdateDueDate(ctx context.Context, id, accountid uint, due_date time.Time) error {
-	_, err := r.db.ExecContext(ctx, updateDueDate, due_date, id, accountid)
-	if err != nil {
-		return err
+	rowEfected, _ := result.RowsAffected()
+	if rowEfected == 0 {
+		return ErrorNotFound
 	}
 	return nil
 }

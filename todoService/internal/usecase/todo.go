@@ -23,9 +23,7 @@ type (
 		Create(ctx context.Context, req dto.CreateTodoReq) error
 		GetAll(ctx context.Context, req dto.GetAllTodoReq) (dto.GetAllTodoRes, error)
 		Delete(ctx context.Context, req dto.DeleteTodoReq) error
-		UpdateDueDate(ctx context.Context, req dto.UpdateTodoDueDateReq) error
-		UpdateStatus(ctx context.Context, req dto.UpdateTodoStatusReq) error
-		UpdatePriority(ctx context.Context, req dto.UpdateTodoPriorityReq) error
+		Update(ctx context.Context, req dto.UpdateTodoReq) error
 
 		// category
 		CreateCat(ctx context.Context, req dto.CreateCatReq) error
@@ -162,44 +160,22 @@ func (s *Service) Delete(ctx context.Context, req dto.DeleteTodoReq) error {
 	return nil
 }
 
-func (s *Service) UpdateDueDate(ctx context.Context, req dto.UpdateTodoDueDateReq) error {
+func (s *Service) Update(ctx context.Context, req dto.UpdateTodoReq) error {
 	err := validator.TodoRequest(ctx, req)
 	if err != nil {
 		return fmt.Errorf("input is not valid: %w", err)
 	}
-	err = s.repo.UpdateDueDate(ctx, req.Id, req.AccountId, req.DueDate)
-	if err != nil {
-		return err
-	}
-	err = s.cache.deleteAll(ctx)
-	if err != nil {
-		return err
-	}
-	return nil
-}
+	var todo models.Todo
+	todo.AccountId = req.AccountId
+	todo.CategoryId = req.CategoryId
+	todo.Description = req.Description
+	todo.DueDate = req.DueDate
+	todo.Id = req.Id
+	todo.Priority = req.Priority
+	todo.Status = req.Status
+	todo.Title = req.Title
 
-func (s *Service) UpdatePriority(ctx context.Context, req dto.UpdateTodoPriorityReq) error {
-	err := validator.TodoRequest(ctx, req)
-	if err != nil {
-		return fmt.Errorf("input is not valid: %w", err)
-	}
-	err = s.repo.UpdatePriority(ctx, req.Id, req.AccountId, req.Priority)
-	if err != nil {
-		return err
-	}
-	err = s.cache.deleteAll(ctx)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (s *Service) UpdateStatus(ctx context.Context, req dto.UpdateTodoStatusReq) error {
-	err := validator.TodoRequest(ctx, req)
-	if err != nil {
-		return fmt.Errorf("input is not valid: %w", err)
-	}
-	err = s.repo.UpdateStatus(ctx, req.Id, req.AccountId)
+	err = s.repo.Update(ctx, &todo)
 	if err != nil {
 		return err
 	}

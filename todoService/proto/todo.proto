@@ -9,9 +9,7 @@ service TodoService{
     rpc Create(CreateRequest) returns (CreateRespons);
     rpc GetAll(GetAllRequest) returns (GetAllRespons);
     rpc Delete(DeleteRequest) returns (DeleteRespons);
-    rpc UpdateStatus(UpdateStatusRequest) returns (UpdateRespons);
-    rpc UpdatePriority(UpdatePriorityRequest) returns (UpdateRespons);
-    rpc UpdateDueDate(UpdateDueDateRequest) returns (UpdateRespons);
+    rpc Update(UpdateRequest) returns (UpdateRespons);
 }
 
 message GetAllRespons{
@@ -37,21 +35,15 @@ message Todo{
     google.protobuf.Timestamp DueDate = 9;
 }
 
-message UpdatePriorityRequest{
-    uint64 accountId = 1;
-    uint64 id = 2;
-    uint64 Priority = 3;
-}
-
-message UpdateDueDateRequest{
-    uint64 accountId = 1;
-    uint64 id = 2;
-    google.protobuf.Timestamp DueDate = 3;
-}
-
-message UpdateStatusRequest{
-    uint64 accountId = 1;
-    uint64 id = 2;
+message UpdateRequest{
+    uint64 id = 1;
+    uint64 accountId= 2;
+    uint64 categoryId= 3;
+    string title= 4;
+    string description= 5;
+    bool status = 6;
+    uint64 priority = 7;
+    google.protobuf.Timestamp DueDate = 8;
 }
 
 message UpdateRespons{

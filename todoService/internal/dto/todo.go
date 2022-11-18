@@ -22,20 +22,32 @@ type (
 		Id        uint `json:"id" validate:"required"`
 		AccountId uint `json:"accountid" validate:"required"`
 	}
-	UpdateTodoStatusReq struct {
-		Id        uint `json:"id" validate:"required"`
-		AccountId uint `json:"accountid" validate:"required"`
+	// UpdateTodoStatusReq struct {
+	// 	Id        uint `json:"id" validate:"required"`
+	// 	AccountId uint `json:"accountid" validate:"required"`
+	// }
+	// UpdateTodoPriorityReq struct {
+	// 	Id        uint `json:"id" validate:"required"`
+	// 	AccountId uint `json:"accountid" validate:"required"`
+	// 	Priority  int  `json:"priority" db:"priority" validate:"required"`
+	// }
+	// UpdateTodoDueDateReq struct {
+	// 	Id        uint      `json:"id" validate:"required"`
+	// 	AccountId uint      `json:"accountid" validate:"required"`
+	// 	DueDate   time.Time `json:"due_date" db:"due_date"`
+	// }
+
+	UpdateTodoReq struct {
+		Id          uint64    `json:"id" validate:"number"`
+		AccountId   uint64    `json:"accountid" validate:"number"`
+		CategoryId  uint64    `json:"categoryid" validate:"number"`
+		Title       string    `json:"title"`
+		Description string    `json:"description"`
+		Status      bool      `json:"status" validate:"boolean"`
+		DueDate     time.Time `json:"due_date" validate:"datetime"`
+		Priority    int       `json:"priority" validate:"number"`
 	}
-	UpdateTodoPriorityReq struct {
-		Id        uint `json:"id" validate:"required"`
-		AccountId uint `json:"accountid" validate:"required"`
-		Priority  int  `json:"priority" db:"priority" validate:"required"`
-	}
-	UpdateTodoDueDateReq struct {
-		Id        uint      `json:"id" validate:"required"`
-		AccountId uint      `json:"accountid" validate:"required"`
-		DueDate   time.Time `json:"due_date" db:"due_date"`
-	}
+
 	GetAllTodoRes struct {
 		Todos *[]models.Todo `json:"todos"`
 	}

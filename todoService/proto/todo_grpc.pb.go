@@ -25,9 +25,7 @@ type TodoServiceClient interface {
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateRespons, error)
 	GetAll(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllRespons, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteRespons, error)
-	UpdateStatus(ctx context.Context, in *UpdateStatusRequest, opts ...grpc.CallOption) (*UpdateRespons, error)
-	UpdatePriority(ctx context.Context, in *UpdatePriorityRequest, opts ...grpc.CallOption) (*UpdateRespons, error)
-	UpdateDueDate(ctx context.Context, in *UpdateDueDateRequest, opts ...grpc.CallOption) (*UpdateRespons, error)
+	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateRespons, error)
 }
 
 type todoServiceClient struct {
@@ -65,27 +63,9 @@ func (c *todoServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts 
 	return out, nil
 }
 
-func (c *todoServiceClient) UpdateStatus(ctx context.Context, in *UpdateStatusRequest, opts ...grpc.CallOption) (*UpdateRespons, error) {
+func (c *todoServiceClient) Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateRespons, error) {
 	out := new(UpdateRespons)
-	err := c.cc.Invoke(ctx, "/proto.TodoService/UpdateStatus", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *todoServiceClient) UpdatePriority(ctx context.Context, in *UpdatePriorityRequest, opts ...grpc.CallOption) (*UpdateRespons, error) {
-	out := new(UpdateRespons)
-	err := c.cc.Invoke(ctx, "/proto.TodoService/UpdatePriority", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *todoServiceClient) UpdateDueDate(ctx context.Context, in *UpdateDueDateRequest, opts ...grpc.CallOption) (*UpdateRespons, error) {
-	out := new(UpdateRespons)
-	err := c.cc.Invoke(ctx, "/proto.TodoService/UpdateDueDate", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/proto.TodoService/Update", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -99,9 +79,7 @@ type TodoServiceServer interface {
 	Create(context.Context, *CreateRequest) (*CreateRespons, error)
 	GetAll(context.Context, *GetAllRequest) (*GetAllRespons, error)
 	Delete(context.Context, *DeleteRequest) (*DeleteRespons, error)
-	UpdateStatus(context.Context, *UpdateStatusRequest) (*UpdateRespons, error)
-	UpdatePriority(context.Context, *UpdatePriorityRequest) (*UpdateRespons, error)
-	UpdateDueDate(context.Context, *UpdateDueDateRequest) (*UpdateRespons, error)
+	Update(context.Context, *UpdateRequest) (*UpdateRespons, error)
 	mustEmbedUnimplementedTodoServiceServer()
 }
 
@@ -118,14 +96,8 @@ func (UnimplementedTodoServiceServer) GetAll(context.Context, *GetAllRequest) (*
 func (UnimplementedTodoServiceServer) Delete(context.Context, *DeleteRequest) (*DeleteRespons, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
 }
-func (UnimplementedTodoServiceServer) UpdateStatus(context.Context, *UpdateStatusRequest) (*UpdateRespons, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateStatus not implemented")
-}
-func (UnimplementedTodoServiceServer) UpdatePriority(context.Context, *UpdatePriorityRequest) (*UpdateRespons, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdatePriority not implemented")
-}
-func (UnimplementedTodoServiceServer) UpdateDueDate(context.Context, *UpdateDueDateRequest) (*UpdateRespons, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateDueDate not implemented")
+func (UnimplementedTodoServiceServer) Update(context.Context, *UpdateRequest) (*UpdateRespons, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Update not implemented")
 }
 func (UnimplementedTodoServiceServer) mustEmbedUnimplementedTodoServiceServer() {}
 
@@ -194,56 +166,20 @@ func _TodoService_Delete_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _TodoService_UpdateStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateStatusRequest)
+func _TodoService_Update_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TodoServiceServer).UpdateStatus(ctx, in)
+		return srv.(TodoServiceServer).Update(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/proto.TodoService/UpdateStatus",
+		FullMethod: "/proto.TodoService/Update",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TodoServiceServer).UpdateStatus(ctx, req.(*UpdateStatusRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _TodoService_UpdatePriority_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdatePriorityRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TodoServiceServer).UpdatePriority(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.TodoService/UpdatePriority",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TodoServiceServer).UpdatePriority(ctx, req.(*UpdatePriorityRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _TodoService_UpdateDueDate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UpdateDueDateRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(TodoServiceServer).UpdateDueDate(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.TodoService/UpdateDueDate",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TodoServiceServer).UpdateDueDate(ctx, req.(*UpdateDueDateRequest))
+		return srv.(TodoServiceServer).Update(ctx, req.(*UpdateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -268,16 +204,8 @@ var TodoService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _TodoService_Delete_Handler,
 		},
 		{
-			MethodName: "UpdateStatus",
-			Handler:    _TodoService_UpdateStatus_Handler,
-		},
-		{
-			MethodName: "UpdatePriority",
-			Handler:    _TodoService_UpdatePriority_Handler,
-		},
-		{
-			MethodName: "UpdateDueDate",
-			Handler:    _TodoService_UpdateDueDate_Handler,
+			MethodName: "Update",
+			Handler:    _TodoService_Update_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

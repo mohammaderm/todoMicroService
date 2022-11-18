@@ -16,6 +16,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type (
@@ -88,8 +89,8 @@ func (t *TodoHandler) Update(w http.ResponseWriter, r *http.Request) {
 		Title:       req.Title,
 		Description: req.Description,
 		Status:      req.Status,
-		DueDate:     req.DueDate,
-		Priority:    req.Priority,
+		DueDate:     timestamppb.New(req.DueDate),
+		Priority:    uint64(req.Priority),
 	})
 	if err != nil {
 		t.errorJSON(w, err, http.StatusInternalServerError)

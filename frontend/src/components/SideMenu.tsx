@@ -25,16 +25,16 @@ interface SideMenuProps extends React.PropsWithChildren {
 	setSlider: (value: boolean) => void;
 	showAddCategory: boolean;
 	setShowAddCategory: (value: boolean) => void;
+	view: string;
+	setView: (value: string) => void;
 }
 
 const SideMenu: React.FC<SideMenuProps> = (props) => {
-	const [view, setView] = useState("first");
-
 	const handleChange = (
 		event: React.MouseEvent<HTMLElement>,
 		nextView: string
 	) => {
-		setView(nextView);
+		props.setView(nextView);
 	};
 
 	return (
@@ -51,7 +51,7 @@ const SideMenu: React.FC<SideMenuProps> = (props) => {
 						<ToggleButtonGroup
 							className="w-full"
 							orientation="vertical"
-							value={view}
+							value={props.view}
 							exclusive
 							onChange={handleChange}
 						>

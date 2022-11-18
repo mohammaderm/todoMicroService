@@ -7,6 +7,7 @@ import SideMenu from "@/components/SideMenu";
 import Button from "@mui/material/Button";
 import { useReducer, useState } from "react";
 import AddTask from "@/components/AddTask";
+import taskType from "@/types/task";
 
 const dispatchSliderHandler = (prev: boolean, action: boolean): boolean => {
 	let lessThan640 = false;
@@ -28,6 +29,8 @@ export default function Home() {
 	const [slider, dispatchSlider] = useReducer(dispatchSliderHandler, false);
 	const [showAddTask, setShowAddTask] = useState(false);
 	const [showAddCategory, setShowAddCategory] = useState(false);
+	const [view, setView] = useState("");
+	const [tasks, setTasks] = useState<Record<string, taskType[]>>({});
 
 	const changeSlider: React.MouseEventHandler<SVGSVGElement> = (e) =>
 		dispatchSlider(!slider);
@@ -46,6 +49,8 @@ export default function Home() {
 				setSlider={dispatchSlider}
 				showAddCategory={showAddCategory}
 				setShowAddCategory={setShowAddCategory}
+				view={view}
+				setView={setView}
 			>
 				{showAddTask && <AddTask set={setShowAddTask} />}
 				<div className="bg-slate-100 h-full p-5 relative rounded-2xl">
@@ -64,8 +69,17 @@ export default function Home() {
 					</Typography>
 					{/* Tasks */}
 					<div className="space-y-3">
-						<Task description="Some Text" done={false} />
-						<Task description="New description" done={true} />
+						{tasks[view] &&
+							tasks[view].map((value) => {
+								return (
+									<Task
+										title={value.title}
+										description={value.description}
+										due_date={value.due_date}
+										status={value.statue}
+									/>
+								);
+							})}
 					</div>
 					{/* End Of Tasks */}
 					<Button

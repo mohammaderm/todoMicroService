@@ -6,17 +6,17 @@ a **TODO LIST** application  written in Golang.
 
 1 - build app:
 
-> make build
+> **make build**
 
 2 - run container:
 
-> make run
+> **make run**
 
 3 - migrate tables:
 
-> make migrate
+> **make migrate**
 
 ## Help Command:
 
-> make help
+> **make help**
 

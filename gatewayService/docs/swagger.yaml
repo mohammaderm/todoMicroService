@@ -16,8 +16,6 @@ definitions:
     type: object
   types.CreateTodoReq:
     properties:
-      accountId:
-        type: integer
       categoryId:
         example: 2
         type: integer
@@ -54,7 +52,7 @@ definitions:
       password:
         example: "111222333444"
         type: string
-      userName:
+      username:
         example: example5040
         type: string
     type: object

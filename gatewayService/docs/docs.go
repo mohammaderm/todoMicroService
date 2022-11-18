@@ -508,9 +508,6 @@ const docTemplate = `{
         "types.CreateTodoReq": {
             "type": "object",
             "properties": {
-                "accountId": {
-                    "type": "integer"
-                },
                 "categoryId": {
                     "type": "integer",
                     "example": 2
@@ -562,7 +559,7 @@ const docTemplate = `{
                     "type": "string",
                     "example": "111222333444"
                 },
-                "userName": {
+                "username": {
                     "type": "string",
                     "example": "example5040"
                 }

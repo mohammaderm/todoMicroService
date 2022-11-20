@@ -32,18 +32,21 @@ func RouterProvider(rp *RouteProvider) http.Handler {
 	r.Use(middleware.Heartbeat("/"))
 	r.Use(MetricMiddleware(rp.Monitoring))
 
-	r.Use(cors.Handler(cors.Options{
-
+	cors := cors.New(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposedHeaders:   []string{"Link"},
 		AllowCredentials: false,
 		MaxAge:           300,
-	}))
+	})
+
+	r.Use(cors.Handler)
 
 	r.Route("/todo", func(r chi.Router) {
+		r.Use(cors.Handler)
 		r.Use(Auth(rp.Cfg))
+		r.Use(MetricMiddleware(rp.Monitoring))
 		r.Post("/create", rp.TodoHandler.Create)
 		r.Get("/getAll", rp.TodoHandler.GetAll)
 		r.Delete("/{id}", rp.TodoHandler.Delete)
@@ -51,7 +54,9 @@ func RouterProvider(rp *RouteProvider) http.Handler {
 	})
 
 	r.Route("/category", func(r chi.Router) {
+		r.Use(cors.Handler)
 		r.Use(Auth(rp.Cfg))
+		r.Use(MetricMiddleware(rp.Monitoring))
 		r.Post("/create", rp.CategoryHandler.CreateCat)
 		r.Get("/getAll", rp.CategoryHandler.GetAllCat)
 		r.Delete("/{id}", rp.CategoryHandler.DeleteCat)

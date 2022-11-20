@@ -41,6 +41,7 @@ func App() (*serverDep, func()) {
 	categoryHandler := delivery.NewCategoryHandler(Logger, &config.Service)
 
 	// servers init
+	fmt.Println("111111111111111111111" + config.Metrics.Port)
 	metrics := monitoring.New(config.Metrics.Port, Logger, config.Server)
 	router := delivery.RouterProvider(&delivery.RouteProvider{
 		AuthHandler:     authHandler,

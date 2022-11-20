@@ -1,8 +1,10 @@
-import { taskAction } from "@/types/task";
+import add_category from "@/api/add_category";
+import { AuthContext } from "@/store/auth";
+import { taskAction } from "@/types/category";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import AddContainer from "./AddContainer";
 
@@ -27,6 +29,8 @@ interface AddCategoryProps {
 
 const AddCategory: React.FC<AddCategoryProps> = (props) => {
 	const [title, setTitle] = useState("");
+	const auth = useContext(AuthContext);
+
 	return (
 		<>
 			<Backdrop set={props.set} />
@@ -57,10 +61,11 @@ const AddCategory: React.FC<AddCategoryProps> = (props) => {
 						variant="contained"
 						className="flex-grow-[0.7]"
 						onClick={() => {
-							props.dispatchTasks({
-								method: "addCategories",
-								categories: [title],
-							} as taskAction);
+							add_category(
+								{ title: title },
+								props.dispatchTasks,
+								auth.getAuthHeaders()
+							)();
 							props.set(false);
 						}}
 					>

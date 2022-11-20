@@ -130,11 +130,7 @@ export default function Home() {
 	const category = view !== -1 ? categories[view] : ({} as CategoryType);
 	const tasks = category ? category.tasks : ([] as taskType[]);
 
-	// useEffect(() => {
-	// 	for( let i = 0; i < Object.keys(tasks).length; i ++ ) {
-
-	// 	}
-	// }, [tasks]);
+	// useEffect(() => {}, [category]);
 
 	return (
 		<>

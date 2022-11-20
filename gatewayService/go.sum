@@ -193,6 +193,8 @@ github.com/modern-go/reflect2 v1.0.1/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3Rllmb
 github.com/modern-go/reflect2 v1.0.2/go.mod h1:yWuevngMOJpCy52FWWMvUC8ws7m/LJsjYzDa0/r8luk=
 github.com/mohammaderm/todoMicroService/authService v0.0.0-20221112192206-c206a2480441 h1:y1pIHjWAlnJEgYVlz+UOCPGIHuY0tKBSN2JScYme1PE=
 github.com/mohammaderm/todoMicroService/authService v0.0.0-20221112192206-c206a2480441/go.mod h1:Z+Duo1MAwKx7YOYY1bcwC7sOagTRa92LZvTaPwH5bSU=
+github.com/mohammaderm/todoMicroService/authService v0.0.0-20221120143932-b20de0d9e257 h1:WXquQJRmGiNOSPNldEBIPOpYJASWLlwdgSZQvelSkZ8=
+github.com/mohammaderm/todoMicroService/authService v0.0.0-20221120143932-b20de0d9e257/go.mod h1:Z+Duo1MAwKx7YOYY1bcwC7sOagTRa92LZvTaPwH5bSU=
 github.com/mohammaderm/todoMicroService/todoService v0.0.0-20221112192206-c206a2480441 h1:KQIryG+c4hn8U7ZJ3+EGpIzRCpKlC3HCnpH1lrzyItc=
 github.com/mohammaderm/todoMicroService/todoService v0.0.0-20221112192206-c206a2480441/go.mod h1:a8eWoRgHEqz+KJnP7f1MCNCTYjS9dV94C4Lj5qUlpko=
 github.com/mohammaderm/todoMicroService/todoService v0.0.0-20221118154643-63d55b8d1988 h1:aMGzGk/op6hqeZGM8Hv2P5vPkbJ4MAZ2Z18cfZ4ncDE=

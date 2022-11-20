@@ -77,11 +77,11 @@ func (a *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 		Message: "user logined succesfully",
 		Data: types.LoginRes{
 			Account: types.Account{
-				Id:        result.Id,
-				Username:  result.UserName,
-				Email:     result.Email,
-				Password:  result.Password,
-				CreatedAt: result.As(),
+				Id:        result.User.Id,
+				Username:  result.User.Usernae,
+				Email:     result.User.Email,
+				Password:  result.User.Password,
+				CreatedAt: result.User.CreatedAt.AsTime(),
 			},
 			AccessToken:  result.PairToken.AccessToken,
 			RefreshToken: result.PairToken.RefreshToken,

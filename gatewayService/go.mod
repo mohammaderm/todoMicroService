@@ -42,7 +42,7 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
-	github.com/mohammaderm/todoMicroService/authService v0.0.0-20221112192206-c206a2480441
+	github.com/mohammaderm/todoMicroService/authService v0.0.0-20221120143932-b20de0d9e257
 	github.com/mohammaderm/todoMicroService/todoService v0.0.0-20221118154643-63d55b8d1988
 	github.com/prometheus/client_golang v1.14.0
 	github.com/sirupsen/logrus v1.9.0

@@ -1,6 +1,7 @@
 type ErrorResponse = {
-    message: string,
-    errors: Record<string, any>
-}
+	data: string;
+	error: boolean;
+	message: string;
+};
 
 export default ErrorResponse;

@@ -14,6 +14,7 @@ a **TODO LIST** application  written in Golang.
 
 3 - migrate tables:
 
+> **go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest**
 > **make migrate**
 
 ## Help Command:

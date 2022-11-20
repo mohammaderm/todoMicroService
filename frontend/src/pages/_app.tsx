@@ -1,6 +1,9 @@
 import "@/styles/globals.css";
+import "react-notifications-component/dist/theme.css";
 import Head from "next/head";
 import type { AppProps } from "next/app";
+import AuthProvider from "@/store/auth";
+import { ReactNotifications } from "react-notifications-component";
 
 export default function App({ Component, pageProps }: AppProps) {
 	return (
@@ -26,7 +29,10 @@ export default function App({ Component, pageProps }: AppProps) {
 				id="overlay110"
 				className="screen fixed inset-0 z-[110] pointer-events-none"
 			></div>
-			<Component {...pageProps} />
+			<ReactNotifications />
+			<AuthProvider>
+				<Component {...pageProps} />
+			</AuthProvider>
 		</>
 	);
 }

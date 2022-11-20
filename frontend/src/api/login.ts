@@ -5,13 +5,15 @@ import { CatchErrorWithoutRepeat } from "./utils/catch_error";
 import { Auth } from "@/store/auth";
 import AccessRefreshToken from "@/types/token";
 import createNotification from "@/notification/notifier";
+import Success from "@/types/success";
 
 function login(auth: Auth, input: Record<string, string>): () => void {
 	return () => {
 		axios
-			.post<AccessRefreshToken>(`/auth/login`, input)
+			.post<Success>(`/auth/login`, input)
 			.then((results) => {
-				auth.authenticate(results.data.accessToken, results.data.refreshToken);
+				const data = results.data.data as AccessRefreshToken;
+				auth.authenticate(data.accessToken, data.refreshToken);
 				Router.push("/");
 				createNotification(200, "", "Successful log in", 0);
 			})

@@ -5,10 +5,12 @@ import Typography from "@mui/material/Typography";
 import Task from "@/components/Task";
 import SideMenu from "@/components/SideMenu";
 import Button from "@mui/material/Button";
-import { useReducer, useState } from "react";
+import { useContext, useEffect, useReducer, useState } from "react";
 import AddTask from "@/components/AddTask";
 import taskType, { taskAction } from "@/types/task";
 import findIndex from "lodash/findIndex";
+import get_categories from "@/api/get_categories";
+import { AuthContext } from "@/store/auth";
 
 const dispatchSliderHandler = (prev: boolean, action: boolean): boolean => {
 	let lessThan640 = false;
@@ -95,11 +97,21 @@ export default function Home() {
 	const [view, setView] = useState("");
 	const [tasks, dispatchTasks] = useReducer(dispatchTasksHandler, {});
 
+	const auth = useContext(AuthContext);
+
 	const changeSlider: React.MouseEventHandler<SVGSVGElement> = (e) =>
 		dispatchSlider(!slider);
 
 	const changeShowAddTask: React.MouseEventHandler<HTMLButtonElement> = (e) =>
 		setShowAddTask(true);
+
+	useEffect(() => get_categories(auth.getAuthHeaders(), dispatchTasks)(), []);
+
+	// useEffect(() => {
+	// 	for( let i = 0; i < Object.keys(tasks).length; i ++ ) {
+
+	// 	}
+	// }, [tasks]);
 
 	return (
 		<>

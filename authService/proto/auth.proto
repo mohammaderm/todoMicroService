@@ -42,5 +42,6 @@ message LoginRequest{
 }
 
 message LoginRespons{
-    PairToken pairToken = 1;
+    User user = 1;
+    PairToken pairToken = 2;
 }

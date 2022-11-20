@@ -1,5 +1,7 @@
 package dto
 
+import "github.com/mohammaderm/todoMicroService/authService/internal/models"
+
 type RegisterReq struct {
 	Username string `json:"username" validate:"required"`
 	Email    string `json:"email" validate:"required,email"`
@@ -16,7 +18,8 @@ type LoginReq struct {
 	Password string `json:"password" validate:"required"`
 }
 
-type PairToken struct {
-	AccessToken  string `json:"accesstoken"`
-	RefreshToken string `json:"refreshtoken"`
+type LoginRes struct {
+	User         *models.User `json:"user"`
+	AccessToken  string       `json:"accesstoken"`
+	RefreshToken string       `json:"refreshtoken"`
 }

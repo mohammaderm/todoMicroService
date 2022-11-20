@@ -20,7 +20,7 @@ var (
 
 type AuthUscase interface {
 	Register(ctx context.Context, req dto.RegisterReq) (dto.RegisterRes, error)
-	Login(ctx context.Context, req dto.LoginReq) (dto.PairToken, error)
+	Login(ctx context.Context, req dto.LoginReq) (dto.LoginRes, error)
 	// refreshToken()
 }
 
@@ -38,24 +38,25 @@ func New(userRepo repository.UserRepository, logger logger.Logger, jwt jwt.JwtIn
 	}
 }
 
-func (u *UseCase) Login(ctx context.Context, req dto.LoginReq) (dto.PairToken, error) {
+func (u *UseCase) Login(ctx context.Context, req dto.LoginReq) (dto.LoginRes, error) {
 	err := validator.AuthRequest(ctx, req)
 	if err != nil {
-		return dto.PairToken{}, ErrValidationFailed
+		return dto.LoginRes{}, ErrValidationFailed
 	}
 	user, err := u.userRepo.FindByEmail(ctx, req.Email)
 	if err != nil {
-		return dto.PairToken{}, err
+		return dto.LoginRes{}, err
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
 	if err != nil {
-		return dto.PairToken{}, ErrWrongCredentials
+		return dto.LoginRes{}, ErrWrongCredentials
 	}
 	pairToken, err := u.jwt.GeneratePairToken(user.Id, user.Email)
 	if err != nil {
-		return dto.PairToken{}, err
+		return dto.LoginRes{}, err
 	}
-	return dto.PairToken{
+	return dto.LoginRes{
+		User:         user,
 		AccessToken:  pairToken["accessToken"],
 		RefreshToken: pairToken["refreshToken"],
 	}, nil

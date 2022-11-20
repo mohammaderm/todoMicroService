@@ -9,6 +9,7 @@ import (
 	"github.com/mohammaderm/todoMicroService/authService/proto"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type AuthServer struct {
@@ -29,17 +30,21 @@ func (a *AuthServer) Login(ctx context.Context, req *proto.LoginRequest) (*proto
 		Email:    req.Email,
 		Password: req.Password,
 	}
-	pairToken, err := a.authUsecase.Login(ctx, user)
+	loginRes, err := a.authUsecase.Login(ctx, user)
 	if err != nil {
 		return nil, status.Error(codes.Unauthenticated, err.Error())
 	}
 
 	// respons
 	res := &proto.LoginRespons{
-		PairToken: &proto.PairToken{
-			AccessToken:  pairToken.AccessToken,
-			RefreshToken: pairToken.RefreshToken,
+		User: &proto.User{
+			Id:        loginRes.User.Id,
+			Email:     loginRes.User.Email,
+			Usernae:   loginRes.User.Username,
+			Password:  "*",
+			CreatedAt: timestamppb.New(loginRes.User.CreatedAt),
 		},
+		PairToken: &proto.PairToken{AccessToken: loginRes.AccessToken, RefreshToken: loginRes.RefreshToken},
 	}
 	return res, nil
 

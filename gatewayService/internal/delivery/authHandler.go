@@ -4,13 +4,13 @@ import (
 	"context"
 	"errors"
 
+	"github.com/mohammaderm/todoMicroService/authService/proto"
 	"github.com/mohammaderm/todoMicroService/gatewayService/config"
 	"github.com/mohammaderm/todoMicroService/gatewayService/pkg/logger"
 
 	"net/http"
 	"time"
 
-	"github.com/mohammaderm/todoMicroService/authService/proto"
 	"github.com/mohammaderm/todoMicroService/gatewayService/internal/types"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -75,7 +75,14 @@ func (a *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 	payload := jsonResponse{
 		Error:   false,
 		Message: "user logined succesfully",
-		Data: types.PairToken{
+		Data: types.LoginRes{
+			Account: types.Account{
+				Id:        result.Id,
+				Username:  result.UserName,
+				Email:     result.Email,
+				Password:  result.Password,
+				CreatedAt: result.As(),
+			},
 			AccessToken:  result.PairToken.AccessToken,
 			RefreshToken: result.PairToken.RefreshToken,
 		},

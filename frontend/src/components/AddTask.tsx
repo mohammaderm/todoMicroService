@@ -1,4 +1,4 @@
-import { taskAction } from "@/types/task";
+import categoryType, { taskAction } from "@/types/category";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -23,7 +23,7 @@ const Backdrop: React.FC<BackdropProps> = (props) => {
 interface AddTaskProps {
 	set: (value: boolean) => void;
 	dispatchTasks: (value: taskAction) => void;
-	category: string;
+	category: categoryType;
 }
 
 const AddTask: React.FC<AddTaskProps> = (props) => {

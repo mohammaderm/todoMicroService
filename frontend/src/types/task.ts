@@ -5,18 +5,3 @@ export default interface Task {
 	status: boolean;
 	due_date: Date;
 }
-
-export interface taskAction {
-	method:
-		| "addCategories"
-		| "replaceCategories"
-		| "deleteCategory"
-		| "addTasks"
-		| "replaceTasks"
-		| "updateTask"
-		| "deleteTask";
-	category: string;
-	categories: string[];
-	tasks: Task[];
-	task: Task;
-}

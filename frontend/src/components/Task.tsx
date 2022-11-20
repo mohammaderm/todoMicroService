@@ -1,11 +1,12 @@
 import Typography from "@mui/material/Typography";
 import PanoramaFishEyeSharpIcon from "@mui/icons-material/PanoramaFishEyeSharp";
 import LensSharpIcon from "@mui/icons-material/LensSharp";
-import taskType, { taskAction } from "@/types/task";
+import categoryType, { taskAction } from "@/types/category";
+import taskType from "@/types/task";
 
 interface TaskProps {
 	task: taskType;
-	category: string;
+	category: categoryType;
 	dispatchTasks: (value: taskAction) => void;
 }
 

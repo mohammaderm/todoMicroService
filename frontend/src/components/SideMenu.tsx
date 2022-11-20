@@ -4,7 +4,7 @@ import AddSharpIcon from "@mui/icons-material/AddSharp";
 import ToggleButton from "./Custom/ToggleButton";
 import { createPortal } from "react-dom";
 import AddCategory from "./AddCategory";
-import { taskAction } from "@/types/task";
+import categoryType, { taskAction } from "@/types/category";
 
 interface BackdropProps {
 	setSlider: (value: boolean) => void;
@@ -25,17 +25,20 @@ interface SideMenuProps extends React.PropsWithChildren {
 	setSlider: (value: boolean) => void;
 	showAddCategory: boolean;
 	setShowAddCategory: (value: boolean) => void;
-	view: string;
-	setView: (value: string) => void;
-	categories: string[];
+	view: number;
+	setView: (value: number) => void;
+	categories: categoryType[];
 	dispatchTasks: (value: taskAction) => void;
 }
 
 const SideMenu: React.FC<SideMenuProps> = (props) => {
 	const handleChange = (
 		event: React.MouseEvent<HTMLElement>,
-		nextView: string
+		nextView: number | null
 	) => {
+		if (nextView === null) {
+			nextView = -1;
+		}
 		props.setView(nextView);
 	};
 
@@ -63,14 +66,13 @@ const SideMenu: React.FC<SideMenuProps> = (props) => {
 								exclusive
 								onChange={handleChange}
 							>
-								{props.categories.map((value) => (
+								{props.categories.map((value, index) => (
 									<ToggleButton
-										//! This has to change to id
-										key={value}
+										key={value.id}
 										className="bg-blue-500 hover:bg-blue-400 text-white font-bold capitalize w-full"
-										value={value}
+										value={index}
 									>
-										{value}
+										{value.title}
 									</ToggleButton>
 								))}
 							</ToggleButtonGroup>

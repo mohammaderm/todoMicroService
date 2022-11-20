@@ -64,7 +64,7 @@ const AuthProvider: React.FC<React.PropsWithChildren> = (
 	const getAuthHeaders: () => AxiosRequestConfig = () => {
 		return {
 			headers: {
-				token: access,
+				Token: access_temp,
 			},
 		};
 	};

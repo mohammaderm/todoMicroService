@@ -24,6 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type TodoServiceClient interface {
 	Create(ctx context.Context, in *CreateRequest, opts ...grpc.CallOption) (*CreateRespons, error)
 	GetAll(ctx context.Context, in *GetAllRequest, opts ...grpc.CallOption) (*GetAllRespons, error)
+	GetAllByCategoryId(ctx context.Context, in *GetAllByCategoryIdRequest, opts ...grpc.CallOption) (*GetAllByCategoryIdRespons, error)
 	Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteRespons, error)
 	Update(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateRespons, error)
 }
@@ -54,6 +55,15 @@ func (c *todoServiceClient) GetAll(ctx context.Context, in *GetAllRequest, opts 
 	return out, nil
 }
 
+func (c *todoServiceClient) GetAllByCategoryId(ctx context.Context, in *GetAllByCategoryIdRequest, opts ...grpc.CallOption) (*GetAllByCategoryIdRespons, error) {
+	out := new(GetAllByCategoryIdRespons)
+	err := c.cc.Invoke(ctx, "/proto.TodoService/GetAllByCategoryId", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *todoServiceClient) Delete(ctx context.Context, in *DeleteRequest, opts ...grpc.CallOption) (*DeleteRespons, error) {
 	out := new(DeleteRespons)
 	err := c.cc.Invoke(ctx, "/proto.TodoService/Delete", in, out, opts...)
@@ -78,6 +88,7 @@ func (c *todoServiceClient) Update(ctx context.Context, in *UpdateRequest, opts 
 type TodoServiceServer interface {
 	Create(context.Context, *CreateRequest) (*CreateRespons, error)
 	GetAll(context.Context, *GetAllRequest) (*GetAllRespons, error)
+	GetAllByCategoryId(context.Context, *GetAllByCategoryIdRequest) (*GetAllByCategoryIdRespons, error)
 	Delete(context.Context, *DeleteRequest) (*DeleteRespons, error)
 	Update(context.Context, *UpdateRequest) (*UpdateRespons, error)
 	mustEmbedUnimplementedTodoServiceServer()
@@ -92,6 +103,9 @@ func (UnimplementedTodoServiceServer) Create(context.Context, *CreateRequest) (*
 }
 func (UnimplementedTodoServiceServer) GetAll(context.Context, *GetAllRequest) (*GetAllRespons, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetAll not implemented")
+}
+func (UnimplementedTodoServiceServer) GetAllByCategoryId(context.Context, *GetAllByCategoryIdRequest) (*GetAllByCategoryIdRespons, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllByCategoryId not implemented")
 }
 func (UnimplementedTodoServiceServer) Delete(context.Context, *DeleteRequest) (*DeleteRespons, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Delete not implemented")
@@ -148,6 +162,24 @@ func _TodoService_GetAll_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TodoService_GetAllByCategoryId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAllByCategoryIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TodoServiceServer).GetAllByCategoryId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.TodoService/GetAllByCategoryId",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TodoServiceServer).GetAllByCategoryId(ctx, req.(*GetAllByCategoryIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _TodoService_Delete_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(DeleteRequest)
 	if err := dec(in); err != nil {
@@ -198,6 +230,10 @@ var TodoService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetAll",
 			Handler:    _TodoService_GetAll_Handler,
+		},
+		{
+			MethodName: "GetAllByCategoryId",
+			Handler:    _TodoService_GetAllByCategoryId_Handler,
 		},
 		{
 			MethodName: "Delete",

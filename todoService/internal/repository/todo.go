@@ -26,6 +26,7 @@ type TodoRepository interface {
 	Delete(ctx context.Context, id, accountid uint) error
 	GetAll(ctx context.Context, accountid uint, offset int) (*[]models.Todo, error)
 	Update(ctx context.Context, todo *models.Todo) error
+	GetAllByCategoryId(ctx context.Context, categoryid, accountid uint64) (*[]models.Todo, error)
 
 	// category
 	CreateCat(ctx context.Context, category *models.Category) (*models.Category, error)
@@ -124,4 +125,13 @@ func (r *repository) Create(ctx context.Context, todo *models.Todo) (*models.Tod
 		return nil, err
 	}
 	return &todoResult, nil
+}
+
+func (r *repository) GetAllByCategoryId(ctx context.Context, categoryid, accountid uint64) (*[]models.Todo, error) {
+	var result []models.Todo
+	err := r.db.SelectContext(ctx, result, getAllByCategoryId, accountid, categoryid)
+	if err != nil {
+		return nil, err
+	}
+	return &result, nil
 }

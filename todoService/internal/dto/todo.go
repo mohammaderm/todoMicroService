@@ -41,6 +41,11 @@ type (
 		Todo *models.Todo `json:"todo"`
 	}
 
+	GetAllByCtegoryReq struct {
+		AccountId  uint64 `json:"accountid" db:"accountid" validate:"required"`
+		CategoryId uint64 `json:"categoryid" db:"categoryid" validate:"required"`
+	}
+
 	// category
 	CreateCatReq struct {
 		Title     string `json:"title" db:"title" validate:"required"`

@@ -8,6 +8,7 @@ import "google/protobuf/timestamp.proto";
 service TodoService{
     rpc Create(CreateRequest) returns (CreateRespons);
     rpc GetAll(GetAllRequest) returns (GetAllRespons);
+    rpc GetAllByCategoryId(GetAllByCategoryIdRequest) returns (GetAllByCategoryIdRespons);
     rpc Delete(DeleteRequest) returns (DeleteRespons);
     rpc Update(UpdateRequest) returns (UpdateRespons);
 }
@@ -16,6 +17,17 @@ message GetAllRespons{
     repeated Todo todos = 1;
     bool error = 2;
     string message = 3;
+}
+
+message GetAllByCategoryIdRespons{
+    repeated Todo todos = 1;
+    bool error = 2;
+    string message = 3;
+}
+
+message GetAllByCategoryIdRequest{
+    uint64 accountId = 1;
+    uint64 categoryId= 2;
 }
 
 message GetAllRequest{

@@ -22,6 +22,7 @@ type (
 		// todo
 		Create(ctx context.Context, req dto.CreateTodoReq) (dto.CreateTodoRes, error)
 		GetAll(ctx context.Context, req dto.GetAllTodoReq) (dto.GetAllTodoRes, error)
+		GetAllByCategory(ctx context.Context, req dto.GetAllByCtegoryReq) (dto.GetAllTodoRes, error)
 		Delete(ctx context.Context, req dto.DeleteTodoReq) error
 		Update(ctx context.Context, req dto.UpdateTodoReq) error
 
@@ -162,6 +163,32 @@ func (s *Service) Delete(ctx context.Context, req dto.DeleteTodoReq) error {
 		return err
 	}
 	return nil
+}
+
+func (s *Service) GetAllByCategory(ctx context.Context, req dto.GetAllByCtegoryReq) (dto.GetAllTodoRes, error) {
+	err := validator.TodoRequest(ctx, req)
+	if err != nil {
+		return dto.GetAllTodoRes{}, fmt.Errorf("input is not valid: %w", err)
+	}
+	result, err := s.cache.getAll(ctx, fmt.Sprintf("userTodo-%d-category-%d", req.AccountId, req.CategoryId))
+	if err != nil {
+		result, err = s.repo.GetAllByCategoryId(ctx, req.AccountId, req.CategoryId)
+		if err != nil {
+			return dto.GetAllTodoRes{}, err
+		}
+		err = s.cache.setAll(ctx, fmt.Sprintf("userTodo-%d-category-%d", req.AccountId, req.CategoryId), result, time.Duration(30)*time.Minute)
+		if err != nil {
+			log.Printf("Warnig: failed to cache valuse: %s \n", err.Error())
+		}
+		return dto.GetAllTodoRes{
+			Todos: result,
+		}, nil
+	}
+	println("cache hit")
+	return dto.GetAllTodoRes{
+		Todos: result,
+	}, nil
+
 }
 
 func (s *Service) Update(ctx context.Context, req dto.UpdateTodoReq) error {

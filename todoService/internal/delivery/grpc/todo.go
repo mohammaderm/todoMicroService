@@ -106,3 +106,19 @@ func (t *TodoServer) Create(ctx context.Context, req *proto.CreateRequest) (*pro
 	}, nil
 
 }
+
+func (t *TodoServer) GetAllByCategoryId(ctx context.Context, req *proto.GetAllByCategoryIdRequest) (*proto.GetAllByCategoryIdRespons, error) {
+	todo := dto.GetAllByCtegoryReq{
+		AccountId:  req.AccountId,
+		CategoryId: req.CategoryId,
+	}
+	todos, err := t.todoUsecase.GetAllByCategory(ctx, todo)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+	return &proto.GetAllByCategoryIdRespons{
+		Todos:   mapTodos(todos.Todos),
+		Error:   false,
+		Message: "succesfully returned",
+	}, nil
+}

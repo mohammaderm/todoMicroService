@@ -49,6 +49,7 @@ func RouterProvider(rp *RouteProvider) http.Handler {
 		r.Use(MetricMiddleware(rp.Monitoring))
 		r.Post("/create", rp.TodoHandler.Create)
 		r.Get("/getAll", rp.TodoHandler.GetAll)
+		r.Get("/getAll/{categoryID}", rp.TodoHandler.GetAllByCategory)
 		r.Delete("/{id}", rp.TodoHandler.Delete)
 		r.Put("/{id}", rp.TodoHandler.Update)
 	})

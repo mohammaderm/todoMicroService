@@ -29,6 +29,7 @@ type (
 		Delete(w http.ResponseWriter, r *http.Request)
 		GetAll(w http.ResponseWriter, r *http.Request)
 		Update(w http.ResponseWriter, r *http.Request)
+		GetAllByCategory(w http.ResponseWriter, r *http.Request)
 	}
 )
 
@@ -39,6 +40,49 @@ func NewTodoHandler(logger logger.Logger, cfg *config.Service) TodoHandlerContra
 		},
 		cfg: cfg,
 	}
+}
+
+// @summary     GETALL TODO BY CATEGORY
+// @description get all todo based on categoryID. (auth required)
+// @tags        Todo
+// @accept      json
+// @Security apiKey
+// @param       categoryId   query     int string "*"
+// @success     200     {object} delivery.jsonResponse
+// @failure     400,500 {object} delivery.jsonResponse "error"
+// @router      /todo/getall/{categoryId} [get]
+func (t *TodoHandler) GetAllByCategory(w http.ResponseWriter, r *http.Request) {
+	categoryId := r.URL.Query().Get("categoryId")
+	categoryInt, err := strconv.Atoi(categoryId)
+	if err != nil {
+		t.errorJSON(w, errors.New("failed to handle request"), http.StatusBadRequest)
+		return
+	}
+	accountInfo := r.Context().Value(accountInfoKeyCtx).(types.AccountInfo)
+	// grpc request
+	conn, err := grpc.DialContext(r.Context(), t.cfg.Todo.Host+":"+t.cfg.Todo.Port, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		t.errorJSON(w, errors.New("internal server error"), http.StatusInternalServerError)
+		return
+	}
+	client := proto.NewTodoServiceClient(conn)
+	ctx, cancel := context.WithTimeout(r.Context(), time.Duration(t.cfg.Todo.ContextDeadline)*time.Second)
+	defer cancel()
+	respons, err := client.GetAllByCategoryId(ctx, &proto.GetAllByCategoryIdRequest{
+		AccountId:  accountInfo.Id,
+		CategoryId: uint64(categoryInt),
+	})
+	if err != nil {
+		t.errorJSON(w, err, http.StatusInternalServerError)
+		return
+	}
+	defer r.Body.Close()
+	payload := jsonResponse{
+		Error:   respons.Error,
+		Message: respons.Message,
+		Data:    respons.Todos,
+	}
+	t.writeJSON(w, http.StatusOK, payload)
 }
 
 // @summary     UPDATE TODO

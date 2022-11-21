@@ -64,6 +64,7 @@ func RouterProvider(rp *RouteProvider) http.Handler {
 
 	r.Post("/auth/login", rp.AuthHandler.Login)
 	r.Post("/auth/register", rp.AuthHandler.Register)
+	r.Post("/auth/refresh", rp.AuthHandler.RefreshToken)
 
 	r.Get("/swagger/*", httpSwagger.Handler(
 		httpSwagger.URL("http://localhost:8080/swagger/doc.json"), //The url pointing to API definition

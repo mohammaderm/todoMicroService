@@ -23,3 +23,12 @@ type LoginRes struct {
 	AccessToken  string       `json:"accesstoken"`
 	RefreshToken string       `json:"refreshtoken"`
 }
+
+type RefreshReq struct {
+	RefreshToken string `json:"refreshtoken" validate:"required"`
+}
+
+type RefreshRes struct {
+	AccessToken  string `json:"accesstoken"`
+	RefreshToken string `json:"refreshtoken"`
+}

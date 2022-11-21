@@ -9,7 +9,17 @@ import "google/protobuf/timestamp.proto";
 service AuthService{
     rpc Register(RegisterRequest) returns (RegisterRespons);
     rpc Login(LoginRequest) returns (LoginRespons);
+    rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenRespons);
 }
+
+message RefreshTokenRequest{
+    string refreshToken = 1;
+}
+
+message RefreshTokenRespons{
+    PairToken pairToken = 1;
+}
+
 
 message User{
     uint64 id = 1;

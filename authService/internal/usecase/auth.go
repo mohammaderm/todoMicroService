@@ -21,7 +21,7 @@ var (
 type AuthUscase interface {
 	Register(ctx context.Context, req dto.RegisterReq) (dto.RegisterRes, error)
 	Login(ctx context.Context, req dto.LoginReq) (dto.LoginRes, error)
-	// refreshToken()
+	RefreshToken(ctx context.Context, req dto.RefreshReq) (dto.RefreshRes, error)
 }
 
 type UseCase struct {
@@ -36,6 +36,21 @@ func New(userRepo repository.UserRepository, logger logger.Logger, jwt jwt.JwtIn
 		logger:   logger,
 		jwt:      jwt,
 	}
+}
+
+func (u *UseCase) RefreshToken(ctx context.Context, req dto.RefreshReq) (dto.RefreshRes, error) {
+	err := validator.AuthRequest(ctx, req)
+	if err != nil {
+		return dto.RefreshRes{}, ErrValidationFailed
+	}
+	pairToken, err := u.jwt.RenewTokens(req.RefreshToken)
+	if err != nil {
+		return dto.RefreshRes{}, err
+	}
+	return dto.RefreshRes{
+		AccessToken:  pairToken["accessToken"],
+		RefreshToken: pairToken["refreshToken"],
+	}, err
 }
 
 func (u *UseCase) Login(ctx context.Context, req dto.LoginReq) (dto.LoginRes, error) {

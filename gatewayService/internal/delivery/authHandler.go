@@ -24,6 +24,7 @@ type AuthHandler struct {
 type AuthHandlerContract interface {
 	Register(w http.ResponseWriter, r *http.Request)
 	Login(w http.ResponseWriter, r *http.Request)
+	RefreshToken(w http.ResponseWriter, r *http.Request)
 }
 
 func NewAuthHandler(logger logger.Logger, cfg *config.Service) AuthHandlerContract {
@@ -33,6 +34,53 @@ func NewAuthHandler(logger logger.Logger, cfg *config.Service) AuthHandlerContra
 		},
 		cfg: cfg,
 	}
+}
+
+// @summary     RefreshToken
+// @description refresh token with "refreshToken" to renew token for authentication user to use other endpoints
+// @tags        Auth
+// @accept      json
+// @param       login   body     request true " "
+// @success     200     {object} delivery.jsonResponse
+// @failure     400,500 {object} delivery.jsonResponse "error"
+// @router      /auth/refresh [post]
+func (a *AuthHandler) RefreshToken(w http.ResponseWriter, r *http.Request) {
+	var request struct {
+		RefreshToken string `json:"refreshToken"`
+	}
+	err := a.readJSON(w, r, &request)
+	if err != nil {
+		a.errorJSON(w, errors.New("can not parse values"), http.StatusBadRequest)
+		return
+	}
+	// grpc reqest
+	conn, err := grpc.DialContext(r.Context(), a.cfg.Auth.Host+":"+a.cfg.Auth.Port, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		a.errorJSON(w, err)
+		return
+	}
+	defer conn.Close()
+	client := proto.NewAuthServiceClient(conn)
+	ctx, cancel := context.WithTimeout(r.Context(), time.Duration(a.cfg.Auth.ContextDeadline)*time.Second)
+	defer cancel()
+	result, err := client.RefreshToken(ctx, &proto.RefreshTokenRequest{
+		RefreshToken: request.RefreshToken,
+	})
+
+	if err != nil {
+		a.errorJSON(w, err, http.StatusInternalServerError)
+		return
+	}
+	defer r.Body.Close()
+
+	// respons
+	payload := jsonResponse{
+		Error:   false,
+		Message: "token refreshed successfully",
+		Data:    result,
+	}
+	a.writeJSON(w, http.StatusOK, payload)
+
 }
 
 // @summary     LOGIN USER

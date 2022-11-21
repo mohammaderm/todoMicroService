@@ -25,6 +25,23 @@ func New(logger logger.Logger, authUseCase usecase.AuthUscase) proto.AuthService
 	}
 }
 
+func (a *AuthServer) RefreshToken(ctx context.Context, req *proto.RefreshTokenRequest) (*proto.RefreshTokenRespons, error) {
+	refresh := dto.RefreshReq{
+		RefreshToken: req.RefreshToken,
+	}
+	pairToken, err := a.authUsecase.RefreshToken(ctx, refresh)
+	if err != nil {
+		return nil, status.Error(codes.Unauthenticated, err.Error())
+	}
+	res := &proto.RefreshTokenRespons{
+		PairToken: &proto.PairToken{
+			AccessToken:  pairToken.AccessToken,
+			RefreshToken: pairToken.RefreshToken,
+		},
+	}
+	return res, nil
+}
+
 func (a *AuthServer) Login(ctx context.Context, req *proto.LoginRequest) (*proto.LoginRespons, error) {
 	user := dto.LoginReq{
 		Email:    req.Email,

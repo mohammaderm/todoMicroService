@@ -236,7 +236,7 @@ func (t *TodoHandler) Create(w http.ResponseWriter, r *http.Request) {
 	payload := jsonResponse{
 		Error:   respons.Error,
 		Message: respons.Message,
-		Data:    nil,
+		Data:    respons.Todo,
 	}
 	t.writeJSON(w, http.StatusOK, payload)
 

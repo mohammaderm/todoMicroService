@@ -10,9 +10,9 @@ import (
 	"github.com/mohammaderm/todoMicroService/gatewayService/config"
 	"github.com/mohammaderm/todoMicroService/gatewayService/internal/types"
 	"github.com/mohammaderm/todoMicroService/gatewayService/pkg/logger"
+	"github.com/mohammaderm/todoMicroService/todoService/proto"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/mohammaderm/todoMicroService/todoService/proto"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -160,7 +160,7 @@ func (c *CategoryHandler) CreateCat(w http.ResponseWriter, r *http.Request) {
 	payload := jsonResponse{
 		Error:   respons.Error,
 		Message: respons.Message,
-		Data:    nil,
+		Data:    respons.Category,
 	}
 	c.writeJSON(w, http.StatusOK, payload)
 

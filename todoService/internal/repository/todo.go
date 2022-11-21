@@ -62,18 +62,15 @@ func (r *repository) DeleteCat(ctx context.Context, id, accountid uint) error {
 }
 
 func (r *repository) CreateCat(ctx context.Context, category *models.Category) (*models.Category, error) {
-	result, err := r.db.ExecContext(ctx, createCategory, category.Title, category.AccountId)
+	var id int
+	err := r.db.QueryRowContext(ctx, createCategory, category.Title, category.AccountId).Scan(&id)
 	if err != nil {
 		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
 			return nil, fmt.Errorf("%w: an category with the given title already exists", ErrUniquenessViolated)
 		}
 	}
-	id, err := result.LastInsertId()
-	if err != nil {
-		return nil, err
-	}
 	var catResult models.Category
-	err = r.db.GetContext(ctx, catResult, getCategoryById, strconv.Itoa(int(id)))
+	err = r.db.GetContext(ctx, &catResult, getCategoryById, strconv.Itoa(id))
 	if err != nil {
 		return nil, err
 	}
@@ -116,16 +113,13 @@ func (r *repository) Delete(ctx context.Context, id, accountid uint) error {
 }
 
 func (r *repository) Create(ctx context.Context, todo *models.Todo) (*models.Todo, error) {
-	result, err := r.db.ExecContext(ctx, createTodo, todo.Title, todo.Description, todo.CategoryId, todo.AccountId)
-	if err != nil {
-		return nil, err
-	}
-	id, err := result.LastInsertId()
+	var id int
+	err := r.db.QueryRowContext(ctx, createTodo, todo.Title, todo.Description, todo.CategoryId, todo.AccountId).Scan(&id)
 	if err != nil {
 		return nil, err
 	}
 	var todoResult models.Todo
-	err = r.db.GetContext(ctx, todoResult, getTodoById, strconv.Itoa(int(id)))
+	err = r.db.GetContext(ctx, &todoResult, getTodoById, strconv.Itoa(id))
 	if err != nil {
 		return nil, err
 	}

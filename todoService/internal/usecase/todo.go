@@ -20,13 +20,13 @@ type (
 
 	TodoService interface {
 		// todo
-		Create(ctx context.Context, req dto.CreateTodoReq) error
+		Create(ctx context.Context, req dto.CreateTodoReq) (dto.CreateTodoRes, error)
 		GetAll(ctx context.Context, req dto.GetAllTodoReq) (dto.GetAllTodoRes, error)
 		Delete(ctx context.Context, req dto.DeleteTodoReq) error
 		Update(ctx context.Context, req dto.UpdateTodoReq) error
 
 		// category
-		CreateCat(ctx context.Context, req dto.CreateCatReq) error
+		CreateCat(ctx context.Context, req dto.CreateCatReq) (dto.CreateCatRes, error)
 		GetAllCat(ctx context.Context, req dto.GetAllCatReq) (dto.GetAllCatRes, error)
 		DeleteCat(ctx context.Context, req dto.DeleteCatReq) error
 	}
@@ -82,41 +82,45 @@ func (s *Service) GetAllCat(ctx context.Context, req dto.GetAllCatReq) (dto.GetA
 	}, nil
 }
 
-func (s *Service) CreateCat(ctx context.Context, req dto.CreateCatReq) error {
+func (s *Service) CreateCat(ctx context.Context, req dto.CreateCatReq) (dto.CreateCatRes, error) {
 	err := validator.TodoRequest(ctx, req)
 	if err != nil {
-		return fmt.Errorf("input is not valid: %w", err)
+		return dto.CreateCatRes{}, fmt.Errorf("input is not valid: %w", err)
 	}
 	var category models.Category
 	category.AccountId = req.AccountId
 	category.Title = req.Title
-	err = s.repo.CreateCat(ctx, &category)
+	result, err := s.repo.CreateCat(ctx, &category)
 	if err != nil {
-		return err
+		return dto.CreateCatRes{}, err
 	}
 	s.cache.deleteAll(ctx)
-	return nil
+	return dto.CreateCatRes{
+		Category: result,
+	}, err
 }
 
 // -----------------
 // todo
 // -----------------
-func (s *Service) Create(ctx context.Context, req dto.CreateTodoReq) error {
+func (s *Service) Create(ctx context.Context, req dto.CreateTodoReq) (dto.CreateTodoRes, error) {
 	err := validator.TodoRequest(ctx, req)
 	if err != nil {
-		return fmt.Errorf("input is not valid: %w", err)
+		return dto.CreateTodoRes{}, fmt.Errorf("input is not valid: %w", err)
 	}
 	var todo models.Todo
 	todo.AccountId = req.AccountId
 	todo.CategoryId = req.CategoryId
 	todo.Title = req.Title
 	todo.Description = req.Description
-	err = s.repo.Create(ctx, &todo)
+	result, err := s.repo.Create(ctx, &todo)
 	if err != nil {
-		return err
+		return dto.CreateTodoRes{}, err
 	}
 	s.cache.deleteAll(ctx)
-	return nil
+	return dto.CreateTodoRes{
+		Todo: result,
+	}, nil
 }
 
 func (s *Service) GetAll(ctx context.Context, req dto.GetAllTodoReq) (dto.GetAllTodoRes, error) {

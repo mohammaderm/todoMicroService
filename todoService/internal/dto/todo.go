@@ -22,20 +22,6 @@ type (
 		Id        uint `json:"id" validate:"required"`
 		AccountId uint `json:"accountid" validate:"required"`
 	}
-	// UpdateTodoStatusReq struct {
-	// 	Id        uint `json:"id" validate:"required"`
-	// 	AccountId uint `json:"accountid" validate:"required"`
-	// }
-	// UpdateTodoPriorityReq struct {
-	// 	Id        uint `json:"id" validate:"required"`
-	// 	AccountId uint `json:"accountid" validate:"required"`
-	// 	Priority  int  `json:"priority" db:"priority" validate:"required"`
-	// }
-	// UpdateTodoDueDateReq struct {
-	// 	Id        uint      `json:"id" validate:"required"`
-	// 	AccountId uint      `json:"accountid" validate:"required"`
-	// 	DueDate   time.Time `json:"due_date" db:"due_date"`
-	// }
 
 	UpdateTodoReq struct {
 		Id          uint64    `json:"id" validate:"number"`
@@ -50,6 +36,9 @@ type (
 
 	GetAllTodoRes struct {
 		Todos *[]models.Todo `json:"todos"`
+	}
+	CreateTodoRes struct {
+		Todo *models.Todo `json:"todo"`
 	}
 
 	// category
@@ -66,5 +55,8 @@ type (
 	}
 	GetAllCatRes struct {
 		Categorys *[]models.Category `json:"categorys"`
+	}
+	CreateCatRes struct {
+		Category *models.Category `json:"categorys"`
 	}
 )

@@ -8,6 +8,7 @@ import (
 	"github.com/mohammaderm/todoMicroService/todoService/proto"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type TodoServer struct {
@@ -84,13 +85,24 @@ func (t *TodoServer) Create(ctx context.Context, req *proto.CreateRequest) (*pro
 		Title:       req.Title,
 		Description: req.Description,
 	}
-	err := t.todoUsecase.Create(ctx, todo)
+	result, err := t.todoUsecase.Create(ctx, todo)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 	return &proto.CreateRespons{
 		Error:   false,
 		Message: "todo succesfully created",
+		Todo: &proto.Todo{
+			Id:          result.Todo.Id,
+			AccountId:   result.Todo.AccountId,
+			CategoryId:  result.Todo.CategoryId,
+			Title:       result.Todo.Title,
+			Description: result.Todo.Description,
+			Status:      result.Todo.Status,
+			CreatedAt:   timestamppb.New(result.Todo.CreatedAt),
+			Priority:    uint64(result.Todo.Priority),
+			DueDate:     timestamppb.New(result.Todo.DueDate),
+		},
 	}, nil
 
 }

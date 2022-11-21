@@ -9,6 +9,7 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 type CategoryServer struct {
@@ -46,13 +47,19 @@ func (c *CategoryServer) CreateCat(ctx context.Context, req *proto.CreateCatRequ
 		Title:     req.Title,
 		AccountId: req.AccountId,
 	}
-	err := c.todoUsecase.CreateCat(ctx, request)
+	result, err := c.todoUsecase.CreateCat(ctx, request)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 	return &proto.CreateCatRespons{
 		Error:   false,
 		Message: "category sucesfully created",
+		Category: &proto.Category{
+			Id:        result.Category.Id,
+			Title:     result.Category.Title,
+			AccountId: request.AccountId,
+			CreatedAt: timestamppb.New(result.Category.CreatedAt),
+		},
 	}, nil
 }
 

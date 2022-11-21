@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"strconv"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/lib/pq"
@@ -21,13 +22,13 @@ type repository struct {
 
 type TodoRepository interface {
 	// todo
-	Create(ctx context.Context, todo *models.Todo) error
+	Create(ctx context.Context, todo *models.Todo) (*models.Todo, error)
 	Delete(ctx context.Context, id, accountid uint) error
 	GetAll(ctx context.Context, accountid uint, offset int) (*[]models.Todo, error)
 	Update(ctx context.Context, todo *models.Todo) error
 
 	// category
-	CreateCat(ctx context.Context, category *models.Category) error
+	CreateCat(ctx context.Context, category *models.Category) (*models.Category, error)
 	DeleteCat(ctx context.Context, id, accountid uint) error
 	GetAllCat(ctx context.Context, accountid uint) (*[]models.Category, error)
 }
@@ -60,14 +61,23 @@ func (r *repository) DeleteCat(ctx context.Context, id, accountid uint) error {
 	return nil
 }
 
-func (r *repository) CreateCat(ctx context.Context, category *models.Category) error {
-	_, err := r.db.ExecContext(ctx, createCategory, category.Title, category.AccountId)
+func (r *repository) CreateCat(ctx context.Context, category *models.Category) (*models.Category, error) {
+	result, err := r.db.ExecContext(ctx, createCategory, category.Title, category.AccountId)
 	if err != nil {
 		if err, ok := err.(*pq.Error); ok && err.Code.Name() == "unique_violation" {
-			return fmt.Errorf("%w: an category with the given title already exists", ErrUniquenessViolated)
+			return nil, fmt.Errorf("%w: an category with the given title already exists", ErrUniquenessViolated)
 		}
 	}
-	return nil
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+	var catResult models.Category
+	err = r.db.GetContext(ctx, catResult, getCategoryById, strconv.Itoa(int(id)))
+	if err != nil {
+		return nil, err
+	}
+	return &catResult, nil
 }
 
 // todo
@@ -105,10 +115,19 @@ func (r *repository) Delete(ctx context.Context, id, accountid uint) error {
 	return nil
 }
 
-func (r *repository) Create(ctx context.Context, todo *models.Todo) error {
-	_, err := r.db.ExecContext(ctx, createTodo, todo.Title, todo.Description, todo.CategoryId, todo.AccountId)
+func (r *repository) Create(ctx context.Context, todo *models.Todo) (*models.Todo, error) {
+	result, err := r.db.ExecContext(ctx, createTodo, todo.Title, todo.Description, todo.CategoryId, todo.AccountId)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	id, err := result.LastInsertId()
+	if err != nil {
+		return nil, err
+	}
+	var todoResult models.Todo
+	err = r.db.GetContext(ctx, todoResult, getTodoById, strconv.Itoa(int(id)))
+	if err != nil {
+		return nil, err
+	}
+	return &todoResult, nil
 }
